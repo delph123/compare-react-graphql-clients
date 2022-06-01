@@ -68,8 +68,12 @@ async function generateMultiUser(numberOfUser) {
 
 async function getUsers({ filters: { id, inIds, ageBelow, ageAbove, types } }) {
   await sleep(30);
-  let users = await Promise.all(new Array(50).fill(0).map((v, i) => i).map(generateUser));
-  if (id) users = users.filter(u => u.id == id)
+  let users = [];
+  if (id) {
+    users.push(generateUser(id.substring(5)));
+  } else {
+    users = await Promise.all(new Array(50).fill(0).map((v, i) => i).map(generateUser));
+  }
   if (inIds) users = users.filter(u => inIds.includes(u.id))
   if (ageBelow) users = users.filter(u => u.age <= ageBelow)
   if (ageAbove) users = users.filter(u => u.age >= ageAbove)
