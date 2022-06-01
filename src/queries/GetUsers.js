@@ -13,8 +13,8 @@ export const GetUsers = gql`
 `;
 
 export const GetUser = gql`
-    query GetUser($userId: ID!) {
-        user(id: $userId) {
+    query GetUser($userId: String!) {
+        users(filters: { id: $userId }) {
             id
             firstName
             lastName

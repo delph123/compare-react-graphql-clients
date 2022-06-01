@@ -11,6 +11,16 @@ const apolloCache = new InMemoryCache({
                 id: args.id,
               });
             }
+          },
+          users: {
+            read(_, { args, toReference }) {
+              if (typeof args?.filters?.id === "string") {
+                return [toReference({
+                  __typename: 'User',
+                  id: args.filters.id,
+                })];
+              }
+            }
           }
         }
       }
