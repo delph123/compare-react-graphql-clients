@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
 import { Link } from "react-router-dom";
-import { GetUser } from "../queries/GetUsers";
+import { GetUser } from "../queries/users";
 
 export default function User({ userId, noLink = false }) {
     let { data: { user, users } = {}, loading, error } = useQuery(GetUser, {

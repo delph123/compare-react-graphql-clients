@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
-import { GetFriends } from "../queries/GetUsers";
+import { GetFriends } from "../queries/users";
 import User from "./User";
 
 function Friends({ userId, backgroundColor = 'magenta' }) {

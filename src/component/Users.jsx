@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
-import { GetUsers } from "../queries/GetUsers";
+import { GetUsers } from "../queries/users";
 import User from "./User";
 
 export default function Users({ ageAbove, ageBelow, category, backgroundColor = 'magenta' }) {
