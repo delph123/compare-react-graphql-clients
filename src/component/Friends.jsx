@@ -24,7 +24,7 @@ function Friends({ userId, backgroundColor = 'magenta' }) {
                 <button onClick={(evt) => setNbFriends(n => n+1)}>+</button>
                 <button onClick={(evt) => setNbFriends(n => n-1)}>-</button>
             </div>
-            {loading ? <p>Loading...</p> : friends.map((friend, i) => {
+            {loading ? <p><i>Loading...</i></p> : friends.map((friend, i) => {
                 return (
                     <p key={friend.id}>({i+1}/{friends.length}) <User userId={friend.id} /></p>
                 );

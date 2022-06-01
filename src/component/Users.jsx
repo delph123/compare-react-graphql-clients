@@ -14,7 +14,6 @@ export default function Users({ ageAbove, ageBelow, category, backgroundColor = 
           }
     });
   
-    if (loading) return <p>Loading...</p>;
     if (error) return <div><p>Error :-/</p><p>Caused by: {error.message}</p></div>;
 
     return (
@@ -22,7 +21,7 @@ export default function Users({ ageAbove, ageBelow, category, backgroundColor = 
             backgroundColor: backgroundColor
         }}>
             <h2 className="App-section-title">{!category ? "ALL" : category.join(' + ')} {!ageAbove ? "" : `(above ${ageAbove})`}{!ageBelow ? "" : `(below ${ageBelow})`}</h2>
-            {data.users.map(user => {
+            {loading ? <p><i>Loading...</i></p> : data.users.map(user => {
                 return (
                     <p key={user.id}><User userId={user.id} /></p>
                 )
