@@ -32,7 +32,7 @@ var schema = buildSchema(`
 `);
 
 async function sleep(max, n) {
-  const delay = random(max+1, n) * 1000;
+  const delay = random(max+1, n) * 100;
   return new Promise((resolve, reject) => {
     setTimeout(resolve, delay);
   })
@@ -62,12 +62,12 @@ async function generateUser(number) {
 };
 
 async function generateMultiUser(numberOfUser) {
-  await sleep(5, 2 * (numberOfUser % 2));
+  await sleep(50, 20 * (numberOfUser % 2));
   return new Array(numberOfUser).fill(0).map(() => random(2000000000)).map(generateUser)
 }
 
 async function getUsers({ filters: { id, inIds, ageBelow, ageAbove, types } }) {
-  await sleep(3);
+  await sleep(30);
   let users = await Promise.all(new Array(50).fill(0).map((v, i) => i).map(generateUser));
   if (id) users = users.filter(u => u.id == id)
   if (inIds) users = users.filter(u => inIds.includes(u.id))
@@ -78,6 +78,7 @@ async function getUsers({ filters: { id, inIds, ageBelow, ageAbove, types } }) {
 }
 
 async function getUser({id}) {
+  await sleep(5 * (parseInt(id.substring(5))) % 3);
   return generateUser(id.substring(5));
 }
 
