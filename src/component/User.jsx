@@ -10,7 +10,7 @@ export default function User({ userId, noLink = false }) {
           }
     });
 
-    if (loading) return <i>Loading...</i>;
+    if (loading || users?.length === 0) return <i>Loading...</i>;
     if (error) return <div><p>Error :-/</p><p>Caused by: {error.message}</p></div>;
 
     if (users && !user) {
