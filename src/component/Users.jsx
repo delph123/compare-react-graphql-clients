@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
 import { GetUsers } from "../queries/users";
+import Loading from "./Loading";
 import User from "./User";
 
 export default function Users({ ageAbove, ageBelow, category, backgroundColor = 'magenta' }) {
@@ -21,7 +22,7 @@ export default function Users({ ageAbove, ageBelow, category, backgroundColor = 
             backgroundColor: backgroundColor
         }}>
             <h2 className="App-section-title">{!category ? "ALL" : category.join(' + ')} {!ageAbove ? "" : `(above ${ageAbove})`}{!ageBelow ? "" : `(below ${ageBelow})`}</h2>
-            {loading ? <p><i>Loading...</i></p> : data.users.map(user => {
+            {loading ? <p><Loading /></p> : data.users.map(user => {
                 return (
                     <p key={user.id}><User userId={user.id} /></p>
                 )
