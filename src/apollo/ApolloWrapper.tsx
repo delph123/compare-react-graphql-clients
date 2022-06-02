@@ -1,12 +1,15 @@
+import React, { FC, PropsWithChildren } from "react";
 import { ApolloClient, ApolloProvider } from "@apollo/client";
 import apolloCache from "./apolloCache";
 
 const client = new ApolloClient({
     uri: '/graphql',
     cache: apolloCache
-  });
+});
 
-function ApolloWrapper({ children }) {
+type ApolloWrapperProps = PropsWithChildren<{}>;
+
+const ApolloWrapper: FC<ApolloWrapperProps> = function ({ children }) {
     return (
         <ApolloProvider client={client}>
             {children}

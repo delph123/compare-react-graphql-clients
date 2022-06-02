@@ -1,10 +1,15 @@
 import { useQuery } from "@apollo/client";
-import React from "react";
+import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { GetUser } from "../queries/users";
 import Loading from "./Loading";
 
-export default function User({ userId, noLink = false }) {
+interface UserProps {
+    userId: string;
+    noLink?: boolean;
+}
+
+const User: FC<UserProps> = function ({ userId, noLink = false }) {
     let { data: { user, users } = {}, loading, error } = useQuery(GetUser, {
         variables: {
             userId
@@ -36,3 +41,5 @@ export default function User({ userId, noLink = false }) {
         </>
     );
 }
+
+export default User;
