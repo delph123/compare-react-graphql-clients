@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import React from "react";
 import { Link } from "react-router-dom";
 import { GetUser } from "../queries/users";
+import Loading from "./Loading";
 
 export default function User({ userId, noLink = false }) {
     let { data: { user, users } = {}, loading, error } = useQuery(GetUser, {
@@ -10,7 +11,7 @@ export default function User({ userId, noLink = false }) {
           }
     });
 
-    if (loading || users?.length === 0) return <i>Loading...</i>;
+    if (loading || users?.length === 0) return <Loading />;
     if (error) return <div><p>Error :-/</p><p>Caused by: {error.message}</p></div>;
 
     if (users && !user) {

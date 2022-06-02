@@ -23,6 +23,12 @@
   filter: brightness(60%);
 }
 
+.loading {
+  font-style: italic;
+  color: #555;
+  font-size: 90%;
+}
+
 .App-route-unknown {
   background-color: #282c34;
   min-height: 100vh;
@@ -34,7 +40,7 @@
   color: white;
 }
 
-.App-header-bar * {
+.App-header-bar > * {
   height: 30px;
   width: 120px;
   margin: 0 10px;
