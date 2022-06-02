@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import UsersCatalog from './page/UsersCatalog';
-
-import './App.css';
 import UserDetails from './page/UserDetails';
 import NotFound from './page/NotFound';
+
+import './App.css';
 
 function App() {
 	return (

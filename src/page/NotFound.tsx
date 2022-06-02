@@ -1,6 +1,8 @@
-import React from "react";
+import React, { FC } from "react";
 
-function NotFound() {
+interface NotFoundProps {}
+
+const NotFound: FC<NotFoundProps> = function () {
     return (
         <main className="App-route-unknown">
             <p>404 - Not Found</p>

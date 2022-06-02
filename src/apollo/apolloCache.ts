@@ -9,7 +9,7 @@ const apolloCache = new InMemoryCache({
 							if (value != null) return value;
 							return toReference({
 								__typename: 'User',
-								id: args.id,
+								id: args?.id,
 							});
 						}
 					},

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import Users from '../component/Users';
 import Header from '../component/Header';
 
-function UsersCatalog() {
+interface UsersCatalogProps {}
+
+const UsersCatalog: FC<UsersCatalogProps> = function () {
   const [color, setColor] = useState('#E6E6FA');
 
   return (

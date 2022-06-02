@@ -1,10 +1,15 @@
 import { useQuery } from "@apollo/client";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { GetFriends } from "../queries/users";
 import Loading from "./Loading";
 import User from "./User";
 
-function Friends({ userId, backgroundColor = 'magenta' }) {
+interface FriendsProps {
+    userId: string;
+    backgroundColor?: string;
+}
+
+const Friends: FC<FriendsProps> = function ({ userId, backgroundColor = 'magenta' }) {
     const [nbFriends, setNbFriends] = useState(10);
 
     const { data: { user: { friends } } = { user: { friends: [] } }, loading, error } = useQuery(GetFriends, {
@@ -25,7 +30,7 @@ function Friends({ userId, backgroundColor = 'magenta' }) {
                 <button onClick={(evt) => setNbFriends(n => n+1)}>+</button>
                 <button onClick={(evt) => setNbFriends(n => n-1)}>-</button>
             </div>
-            {loading ? <p><Loading /></p> : friends.map((friend, i) => {
+            {loading ? <p><Loading /></p> : friends.map((friend: any, i: number) => {
                 return (
                     <p key={friend.id}>({i+1}/{friends.length}) <User userId={friend.id} /></p>
                 );
