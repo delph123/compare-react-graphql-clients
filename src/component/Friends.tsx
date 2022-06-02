@@ -10,6 +10,9 @@ interface FriendsProps {
     backgroundColor?: string;
 }
 
+const increment = (n : number) => n + 1;
+const decrement = (n : number) => n - 1;
+
 const Friends: FC<FriendsProps> = function ({ userId, backgroundColor = 'magenta' }) {
     const nbFriends = useReactiveVar(numberOfFriendsVar);
     const setNbFriends = (changeNumber: (n: number) => number) => numberOfFriendsVar(changeNumber(nbFriends));
@@ -29,8 +32,8 @@ const Friends: FC<FriendsProps> = function ({ userId, backgroundColor = 'magenta
         }}>
             <div>
                 <h2>FRIENDS ({nbFriends})</h2>
-                <button onClick={(evt) => setNbFriends(n => n+1)}>+</button>
-                <button onClick={(evt) => setNbFriends(n => n-1)}>-</button>
+                <button onClick={() => setNbFriends(increment)}>+</button>
+                <button onClick={() => setNbFriends(decrement)}>-</button>
             </div>
             {loading ? <p><Loading /></p> : friends.map((friend: any, i: number) => {
                 return (
