@@ -1,5 +1,6 @@
-import { useQuery } from "@apollo/client";
-import React, { FC, useState } from "react";
+import { useQuery, useReactiveVar } from "@apollo/client";
+import React, { FC } from "react";
+import { numberOfFriendsVar } from "../apollo/localState";
 import { GetFriends } from "../queries/users";
 import Loading from "./Loading";
 import User from "./User";
@@ -10,7 +11,8 @@ interface FriendsProps {
 }
 
 const Friends: FC<FriendsProps> = function ({ userId, backgroundColor = 'magenta' }) {
-    const [nbFriends, setNbFriends] = useState(10);
+    const nbFriends = useReactiveVar(numberOfFriendsVar);
+    const setNbFriends = (changeNumber: (n: number) => number) => numberOfFriendsVar(changeNumber(nbFriends));
 
     const { data: { user: { friends } } = { user: { friends: [] } }, loading, error } = useQuery(GetFriends, {
         variables: {

@@ -1,11 +1,13 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import Users from '../component/Users';
 import Header from '../component/Header';
+import { backgroundColorVar } from '../apollo/localState';
+import { useReactiveVar } from '@apollo/client';
 
 interface UsersCatalogProps {}
 
 const UsersCatalog: FC<UsersCatalogProps> = function () {
-  const [color, setColor] = useState('#E6E6FA');
+  const [color, setColor] = [useReactiveVar(backgroundColorVar), backgroundColorVar];
 
   return (
     <>
