@@ -5,7 +5,8 @@ const apolloCache = new InMemoryCache({
 			Query: {
 				fields: {
 					user: {
-						read(_, { args, toReference }) {
+						read(value, { args, toReference }) {
+							if (value != null) return value;
 							return toReference({
 								__typename: 'User',
 								id: args.id,
@@ -13,7 +14,8 @@ const apolloCache = new InMemoryCache({
 						}
 					},
 					users: {
-						read(_, { args, toReference }) {
+						read(value, { args, toReference }) {
+							if (value != null) return value;
 							if (typeof args?.filters?.id === "string") {
 								return [
 									toReference({
