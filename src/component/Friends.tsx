@@ -1,6 +1,7 @@
-import { useQuery, useReactiveVar } from "@apollo/client";
+import { useReactiveVar } from "@apollo/client";
 import React, { FC } from "react";
 import { numberOfFriendsVar } from "../apollo/localState";
+import useQuery from "../hooks/useQuery";
 import useRenderCounter from "../hooks/useRenderCounter";
 import { GetFriends } from "../queries/users";
 import Loading from "./Loading";

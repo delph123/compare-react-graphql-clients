@@ -1,5 +1,5 @@
-import { useQuery } from "@apollo/client";
 import React, { FC } from "react";
+import useQuery from "../hooks/useQuery";
 import useRenderCounter from "../hooks/useRenderCounter";
 import { GetUsers } from "../queries/users";
 import Loading from "./Loading";

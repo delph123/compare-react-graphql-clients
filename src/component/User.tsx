@@ -1,6 +1,6 @@
-import { useQuery } from "@apollo/client";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import useQuery from "../hooks/useQuery";
 import useRenderCounter from "../hooks/useRenderCounter";
 import { GetUser } from "../queries/users";
 import Loading from "./Loading";
