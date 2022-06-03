@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 const useRenderCounter = function (initialCount = 0) {
     const renderCounter = useRef(initialCount);
