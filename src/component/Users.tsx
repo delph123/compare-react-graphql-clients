@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { FC } from "react";
+import useRenderCounter from "../hooks/useRenderCounter";
 import { GetUsers } from "../queries/users";
 import Loading from "./Loading";
 import User from "./User";
@@ -12,6 +13,8 @@ interface UsersProps {
 }
 
 const Users: FC<UsersProps> = function ({ ageAbove, ageBelow, category, backgroundColor = 'magenta' }) {
+    const renderCounter  = useRenderCounter();
+
     const { data, loading, error } = useQuery(GetUsers, {
         variables: {
             filters: {
@@ -28,6 +31,7 @@ const Users: FC<UsersProps> = function ({ ageAbove, ageBelow, category, backgrou
         <section className='App-section' style={{
             backgroundColor: backgroundColor
         }}>
+            [{renderCounter}]
             <h2 className="App-section-title">{!category ? "ALL" : category.join(' + ')} {!ageAbove ? "" : `(above ${ageAbove})`}{!ageBelow ? "" : `(below ${ageBelow})`}</h2>
             {loading ? <p><Loading /></p> : data.users.map((user: any) => {
                 return (
