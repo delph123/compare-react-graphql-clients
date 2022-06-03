@@ -1,4 +1,5 @@
 import React, { FC, PropsWithChildren } from "react"
+import useRenderCounter from "../hooks/useRenderCounter";
 
 type HeaderProps = PropsWithChildren<{
     color: string;
@@ -7,8 +8,10 @@ type HeaderProps = PropsWithChildren<{
 }>;
 
 const Header: FC<HeaderProps> = function ({ children, color, onColorChanged, onNavigationPressed }) {
+    const renderCounter  = useRenderCounter();
+    
     return <header className="App-header">
-        <div className="background" style={{ backgroundColor: color }}></div>
+        <div className="background" style={{ backgroundColor: color }}>[{renderCounter}]</div>
         {children}
         <div className="App-header-bar">
             {!onNavigationPressed ? null : <button onClick={() => onNavigationPressed((n: number) => n-10)}>&lt;&lt;&nbsp;previous (10)</button>}
