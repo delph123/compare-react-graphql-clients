@@ -12,6 +12,7 @@ interface UserProps {
 
 const User: FC<UserProps> = function ({ userId, noLink = false }) {
     const renderCounter = useRenderCounter();
+    
     let { data: { user, users } = {}, loading, error } = useQuery(GetUser, {
         variables: {
             userId

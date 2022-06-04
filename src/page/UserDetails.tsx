@@ -16,7 +16,7 @@ const UserDetails: FC<UserDetailsProps> = function () {
   
     return (
       <>
-        <Header color={color} onColorChanged={setColor} onNavigationPressed={(nav: any) => navigate(`/user/${nav(parseInt(params.userId))}`)}>
+        <Header color={color} onColorChanged={setColor} onNavigationPressed={(nav) => navigate(`/user/${nav(parseInt(params.userId))}`)}>
             <User userId={userId} noLink={true} />
             <button onClick={() => navigate("/")}>Home</button>
         </Header>
