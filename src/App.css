@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
   display: flex;
   justify-content: space-around;
 }
@@ -68,9 +67,7 @@ a.App-user-id:hover {
 }
 
 .App-section p {
-  /* border: 1px solid darkblue; */
   width: 100%;
-  /* display: list-item; */
   padding: 2px;
   margin: 0px;
 }

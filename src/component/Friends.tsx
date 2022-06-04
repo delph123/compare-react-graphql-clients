@@ -33,7 +33,7 @@ const Friends: FC<FriendsProps> = function ({ userId, backgroundColor = 'magenta
         <section className='App-section' style={{
             backgroundColor: backgroundColor
         }}>
-            <div>
+            <div className="App-section-title">
                 [{renderCounter}]
                 <h2>FRIENDS ({nbFriends})</h2>
                 <button onClick={() => setNbFriends(increment)}>+</button>
