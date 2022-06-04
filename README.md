@@ -7,7 +7,6 @@ To be filled...
 ## To Do
 
 * Write README.md
-* Fix title of userDetails header during navigation to uncached user when using redux query (displaying infinite "Loading...")
 * Avoid re-rendering all users when changing background color
 * Write a useLocalState with same interface as useState enabling switching between useState & useReactiveVar
 * Change server keys to UUIDs
