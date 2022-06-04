@@ -12,14 +12,14 @@ interface UserProps {
 
 const User: FC<UserProps> = function ({ userId, noLink = false }) {
     const renderCounter = useRenderCounter();
-    
+
     let { data: { user, users } = {}, loading, error } = useQuery(GetUser, {
         variables: {
             userId
           }
     });
 
-    if (loading || users?.length === 0) return <Loading />;
+    if (loading) return <Loading />;
     if (error) return <div><p>Error :-/</p><p>Caused by: {error.message}</p></div>;
 
     if (users && !user) {
