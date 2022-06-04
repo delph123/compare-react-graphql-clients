@@ -2,7 +2,7 @@ import React, { FC, PropsWithChildren } from "react";
 import { ApolloClient, ApolloProvider } from "@apollo/client";
 import apolloCache from "./apolloCache";
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
     uri: '/graphql',
     cache: apolloCache
 });
