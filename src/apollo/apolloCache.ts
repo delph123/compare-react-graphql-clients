@@ -21,13 +21,13 @@ const apolloCache = new InMemoryCache({
 									toReference({
 										__typename: 'User',
 										id: args.filters.id,
-									})
+									}),
 								];
 							}
 						}
-					}
+					},
 				}
-			}
+			},
 		}
 	});
 
