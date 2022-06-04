@@ -8,7 +8,6 @@ To be filled...
 
 * Write README.md
 * Avoid re-rendering all users when changing background color
-* Write a useLocalState with same interface as useState enabling switching between useState & useReactiveVar
 * Change server keys to UUIDs
 * Migrate useReduxQuery to useReactiveVar instead of useState (global store)
 * Migrate useReduxQuery to Redux

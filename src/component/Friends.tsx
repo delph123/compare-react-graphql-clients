@@ -1,6 +1,6 @@
-import { useReactiveVar } from "@apollo/client";
 import React, { FC } from "react";
 import { numberOfFriendsVar } from "../apollo/localState";
+import useLocalState from "../hooks/useLocalState";
 import useQuery from "../hooks/useQuery";
 import useRenderCounter from "../hooks/useRenderCounter";
 import { GetFriends } from "../queries/users";
@@ -18,8 +18,7 @@ const decrement = (n : number) => n - 1;
 const Friends: FC<FriendsProps> = function ({ userId, backgroundColor = 'magenta' }) {
     const renderCounter  = useRenderCounter();
 
-    const nbFriends = useReactiveVar(numberOfFriendsVar);
-    const setNbFriends = (changeNumber: (n: number) => number) => numberOfFriendsVar(changeNumber(nbFriends));
+    const [nbFriends, setNbFriends] = useLocalState(numberOfFriendsVar);
 
     const { data: { user: { friends } } = { user: { friends: [] } }, loading, error } = useQuery(GetFriends, {
         variables: {

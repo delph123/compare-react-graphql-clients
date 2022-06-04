@@ -1,15 +1,15 @@
-import { useReactiveVar } from "@apollo/client";
 import React, { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { backgroundColorVar } from "../apollo/localState";
 import Friends from "../component/Friends";
 import Header from "../component/Header";
 import User from "../component/User";
+import useLocalState from "../hooks/useLocalState";
 
 interface UserDetailsProps {}
 
 const UserDetails: FC<UserDetailsProps> = function () {
-    const [color, setColor] = [useReactiveVar(backgroundColorVar), backgroundColorVar];
+    const [color, setColor] = useLocalState(backgroundColorVar);
     const params = useParams() as { userId: string };
     const navigate = useNavigate();
     const userId = `user-${params.userId}`;
