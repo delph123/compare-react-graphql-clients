@@ -1,9 +1,15 @@
 import { InMemoryCache } from "@apollo/client";
+import { numberOfFriendsVar } from "./localState";
 
 const apolloCache = new InMemoryCache({
 		typePolicies: {
 			Query: {
 				fields: {
+					numberOfFriends: {
+						read() {
+							return numberOfFriendsVar();
+						}
+					},
 					user: {
 						read(value, { args, toReference }) {
 							if (value != null) return value;

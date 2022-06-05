@@ -7,8 +7,7 @@ To be filled...
 ## To Do
 
 * Write README.md
+* Add apollo & global store cache eviction
 * Change server keys to UUIDs
 * Migrate useReduxQuery to Redux
-* Create a use-case for @client query and client-side schema
-* Add Babel compilation for GraphQL queries & write queries as .graphql
-* Cache list of friends while loading user for user details
+* Add Babel compilation for GraphQL queries & write queries as .graphql, add client-side schema
