@@ -10,7 +10,9 @@ interface UserProps {
     noLink?: boolean;
 }
 
-const User: FC<UserProps> = function ({ userId, noLink = false }) {
+// User is a Pure Components w.r.t. its props so we can encaspsulate it
+// in React.memo to avoid re-rendering when no prop has changed.
+const User: FC<UserProps> = React.memo(function User({ userId, noLink = false }) {
     const renderCounter = useRenderCounter();
 
     let { data: { user, users } = {}, loading, error } = useQuery(GetUser, {
@@ -44,6 +46,6 @@ const User: FC<UserProps> = function ({ userId, noLink = false }) {
             {` [${renderCounter}]`}
         </>
     );
-}
+});
 
 export default User;

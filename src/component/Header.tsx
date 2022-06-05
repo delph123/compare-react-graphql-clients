@@ -7,7 +7,9 @@ type HeaderProps = PropsWithChildren<{
     onNavigationPressed?: (nav: (n: number) => number) => void;
 }>;
 
-const Header: FC<HeaderProps> = function ({ children, color, onColorChanged, onNavigationPressed }) {
+// Header is a Pure Components w.r.t. its props so we can encaspsulate it
+// in React.memo to avoid re-rendering when no prop has changed.
+const Header: FC<HeaderProps> = React.memo(function Header({ children, color, onColorChanged, onNavigationPressed }) {
     const renderCounter  = useRenderCounter();
     
     return <header className="App-header">
@@ -21,6 +23,6 @@ const Header: FC<HeaderProps> = function ({ children, color, onColorChanged, onN
             {!onNavigationPressed ? null : <button onClick={() => onNavigationPressed((n: number) => n+10)}>next (10)&nbsp;&gt;&gt;</button>}
         </div>
     </header>
-}
+});
 
 export default Header;
