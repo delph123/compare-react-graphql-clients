@@ -18,7 +18,21 @@ export function clearApolloCache() {
     client.clearStore();
 }
 
+
 export function refresh(userId?: string) {
-    clearApolloCache();
-    clearGlobalQueryCache();
+    if (userId) {
+        evictApolloCache("user-" + userId);
+        // evictGlobalQueryCache(userId);
+        clearGlobalQueryCache();
+    } else {
+        clearApolloCache();
+        clearGlobalQueryCache();
+    }
+}
+
+export function evictApolloCache(userId: string) {
+    client.cache.evict({ id: client.cache.identify({
+        id: userId,
+        __typename: "User",
+    }) });
 }
