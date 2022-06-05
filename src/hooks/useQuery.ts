@@ -15,7 +15,7 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
     const queryId = (query.definitions[0] as any).name.value + ":" + JSON.stringify(options?.variables);
     let result = cache[queryId];
 
-    console.log("Called useQuery on:", queryId, result);
+    // console.log("Called useQuery on:", queryId, result);
 
     if (result == null) {
 
@@ -33,13 +33,13 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
             ...options,
             query,
         } as QueryOptions<TVariables, TData>).then((result) => {
-            console.log("Got result:", result, queryId);
+            // console.log("Got result:", result, queryId);
             setCache((prevCache) => ({
                 ...prevCache,
                 [queryId]: result as QueryResult<TData, TVariables>,
             }));
         }).catch((error) => {
-            console.log("Got error:", error, queryId);
+            // console.log("Got error:", error, queryId);
             setCache((prevCache) => ({
                 ...prevCache,
                 [queryId]: {

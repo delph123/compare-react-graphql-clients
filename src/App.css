@@ -39,9 +39,27 @@
   color: white;
 }
 
-.App-header-bar > * {
-  height: 30px;
+.App-header-bar > button {
+  background-color: #d3d5e7;
+  border: 0;
+  border-radius: 13px;
+  height: 25px;
   width: 120px;
+  margin: 0 8px;
+  vertical-align: bottom;
+}
+
+.App-header-bar > button:hover,
+.App-header-subbar > *:hover {
+  border: 1px solid black;
+  filter: brightness(90%);
+}
+
+.App-header-subbar > * {
+  border: 0;
+  border-radius: 13px;
+  height: 25px;
+  width: 150px;
   margin: 0 10px;
   vertical-align: bottom;
 }
