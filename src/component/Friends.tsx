@@ -15,7 +15,9 @@ interface FriendsProps {
 const increment = (n : number) => n + 1;
 const decrement = (n : number) => n - 1;
 
-const Friends: FC<FriendsProps> = function ({ userId, backgroundColor = 'magenta' }) {
+// Friends is a Pure Components w.r.t. its props so we can encaspsulate it
+// in React.memo to avoid re-rendering when no prop has changed.
+const Friends: FC<FriendsProps> = React.memo(function Friends({ userId, backgroundColor = 'magenta' }) {
     const renderCounter  = useRenderCounter();
 
     const [nbFriends, setNbFriends] = useLocalState(numberOfFriendsVar);
@@ -46,6 +48,6 @@ const Friends: FC<FriendsProps> = function ({ userId, backgroundColor = 'magenta
             })}
         </section>
     );
-}
+});
 
 export default Friends;

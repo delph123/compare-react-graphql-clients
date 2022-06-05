@@ -12,7 +12,9 @@ interface UsersProps {
     backgroundColor?: string;
 }
 
-const Users: FC<UsersProps> = function ({ ageAbove, ageBelow, category, backgroundColor = 'magenta' }) {
+// Users is a Pure Components w.r.t. its props so we can encaspsulate it
+// in React.memo to avoid re-rendering when no prop has changed.
+const Users: FC<UsersProps> = React.memo(function Users({ ageAbove, ageBelow, category, backgroundColor = 'magenta' }) {
     const renderCounter  = useRenderCounter();
 
     const { data, loading, error } = useQuery(GetUsers, {
@@ -41,6 +43,6 @@ const Users: FC<UsersProps> = function ({ ageAbove, ageBelow, category, backgrou
         </section>
     );
     
-}
+});
 
 export default Users;
