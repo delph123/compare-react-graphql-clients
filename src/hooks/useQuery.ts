@@ -22,10 +22,10 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 
         // Add loading state in the cache to avoid duplicate call to apollo
         result = { loading: true } as QueryResult<TData, TVariables>;
-        setCache({
-            ...cache,
+        setCache((prevCache) => ({
+            ...prevCache,
             [queryId]: result,
-        });
+        }));
 
         // Launch query
         apolloClient.query({
@@ -33,19 +33,19 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
             query,
         } as QueryOptions<TVariables, TData>).then((result) => {
             console.log("Got result:", result, queryId);
-            setCache({
-                ...cache,
+            setCache((prevCache) => ({
+                ...prevCache,
                 [queryId]: result as QueryResult<TData, TVariables>,
-            });
+            }));
         }).catch((error) => {
             console.log("Got error:", error, queryId);
-            setCache({
-                ...cache,
+            setCache((prevCache) => ({
+                ...prevCache,
                 [queryId]: {
                     loading: false,
                     error,
                 } as QueryResult<TData, TVariables>,
-            });
+            }));
         });
 
     }
