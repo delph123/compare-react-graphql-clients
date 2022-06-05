@@ -1,13 +1,21 @@
 import { gql } from "@apollo/client";
 
 export const GetUsers = gql`
-    query GetUsers($filters: UserFilter) {
+    query GetUsers($filters: UserFilter, $nbFriends: Int!) {
+        numberOfFriends @client @export(as: "nbFriends")
         users(filters: $filters) {
             id
             firstName
             lastName
             age
             type
+            friends(max: $nbFriends) {
+                id
+                firstName
+                lastName
+                age
+                type
+            }
         }
     }
 `;
