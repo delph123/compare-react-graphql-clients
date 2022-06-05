@@ -21,7 +21,9 @@ const apolloCache = new InMemoryCache({
 					},
 					users: {
 						read(value, { args, toReference, canRead }) {
-							if (value != null) return value;
+							if (value != null) {
+								return value.filter(canRead).length === value.length ? value : undefined;
+							}
 							if (typeof args?.filters?.id === "string") {
 								const userRef = toReference({
 									__typename: 'User',
