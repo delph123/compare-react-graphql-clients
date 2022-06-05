@@ -1,6 +1,7 @@
 import { OperationVariables, QueryHookOptions, QueryOptions, QueryResult, TypedDocumentNode, useQuery as useApolloQuery } from "@apollo/client";
-import { useState } from "react";
 import { client as apolloClient } from "../apollo/ApolloWrapper";
+import { globalQueryCache } from "../apollo/localState";
+import useLocalState from "./useLocalState";
 
 const USE_APOLLO_HOOK = false;
 
@@ -9,7 +10,7 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
     options?: QueryHookOptions<TData, TVariables>
 ): QueryResult<TData, TVariables> {
 
-    const [cache, setCache] = useState({} as Record<string, QueryResult<TData, TVariables>>);
+    const [cache, setCache] = useLocalState<Record<string, QueryResult<TData, TVariables>>>(globalQueryCache as any);
 
     const queryId = (query.definitions[0] as any).name.value + ":" + JSON.stringify(options?.variables);
     let result = cache[queryId];

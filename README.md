@@ -8,7 +8,6 @@ To be filled...
 
 * Write README.md
 * Change server keys to UUIDs
-* Migrate useReduxQuery to useReactiveVar instead of useState (global store)
 * Migrate useReduxQuery to Redux
 * Create a use-case for @client query and client-side schema
 * Add Babel compilation for GraphQL queries & write queries as .graphql
