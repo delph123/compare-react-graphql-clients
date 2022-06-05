@@ -12,12 +12,21 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
     const [cache, setCache] = useState({} as Record<string, QueryResult<TData, TVariables>>);
 
     const queryId = (query.definitions[0] as any).name.value + ":" + JSON.stringify(options?.variables);
-    const result = cache[queryId];
+    let result = cache[queryId];
 
     console.log("Called useQuery on:", queryId, result);
 
     if (result == null) {
+
         console.log("Launching query:", queryId);
+
+        // Add loading state in the cache to avoid duplicate call to apollo
+        result = { loading: true } as QueryResult<TData, TVariables>;
+        setCache({
+            ...cache,
+            [queryId]: result,
+        });
+
         // Launch query
         apolloClient.query({
             ...options,
@@ -38,10 +47,11 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
                 } as QueryResult<TData, TVariables>,
             });
         });
-        return { loading: true } as QueryResult<TData, TVariables>;
-    } else {
-        return result;
+
     }
+
+    return result;
+    
 }
 
 const useQuery = USE_APOLLO_HOOK ? useApolloQuery : useReduxQuery;
