@@ -24,7 +24,7 @@ const Users: FC<UsersProps> = React.memo(function Users({ ageAbove, ageBelow, ca
                 ageBelow: ageBelow,
                 types: category
             }
-          }
+        }
     });
   
     if (error) return <div><p>Error :-/</p><p>Caused by: {error.message}</p></div>;
