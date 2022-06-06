@@ -25,7 +25,10 @@ export function refresh(userId?: string) {
         // evictGlobalQueryCache(userId);
         clearGlobalQueryCache();
     } else {
-        clearApolloCache();
+        // Evict GetUsers from ROOT_QUERY
+        client.cache.evict({
+            fieldName: 'users'
+        });
         clearGlobalQueryCache();
     }
 }
@@ -35,4 +38,8 @@ export function evictApolloCache(userId: string) {
         id: userId,
         __typename: "User",
     }) });
+    // Evicting records from cache causes some unreachable
+    // cache entry, we can remove them with a call to the
+    // garbage collector  (usually removes a few old friends)
+    console.log(client.cache.gc())
 }

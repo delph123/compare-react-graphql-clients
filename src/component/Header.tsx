@@ -21,7 +21,15 @@ const Header: FC<HeaderProps> = React.memo(function Header({ children, color, on
             <button onClick={clearGlobalQueryCache}>Clear Redux Cache</button>
             <button onClick={resetApolloCache}>Reset Apollo Cache</button>
             <input type="color" onChange={(evt) => onColorChanged(evt.target.value)} value={color} name="pick a color" />
-            <button onClick={() => refresh(params?.userId)}>Refresh</button>
+            <button onClick={() => refresh(params?.userId)}>
+                Refresh
+                {
+                    params?.userId != null ?
+                        ` (usr ${params.userId.length > 5 ? params.userId.substring(0, 2) + '...' + params.userId.substring(params.userId.length - 3) : params.userId })`
+                        :
+                        " (users)"
+                }
+            </button>
         </div>
     </header>
 });
