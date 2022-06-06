@@ -17,12 +17,24 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 
     // console.log("Called useQuery on:", queryId, result);
 
-    if (result == null) {
+    if (result == null || result?.called === false) {
 
         console.log("Launching query:", queryId);
 
+        const refresh = result?.called === false;
+
+        // The refetch function can be used to trigger a refresh of current query
+        // It's both clearing the global cache entry for the current query & also
+        // ensuring the apollo query will re-triggered by setting called = false.
+        const refetch = () => {
+            setCache((prevCache) => ({
+                ...prevCache,
+                [queryId]: { loading: true, called: false } as QueryResult<TData, TVariables>,
+            }));
+        }
+
         // Add loading state in the cache to avoid duplicate call to apollo
-        result = { loading: true } as QueryResult<TData, TVariables>;
+        result = { loading: true, refetch, called: true } as QueryResult<TData, TVariables>;
         setCache((prevCache) => ({
             ...prevCache,
             [queryId]: result,
@@ -32,19 +44,28 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
         apolloClient.query({
             ...options,
             query,
-        } as QueryOptions<TVariables, TData>).then((result) => {
+            // The network-only policy allows to bypass the apollo cache, even though it eventually
+            // stores the query result its cache. We use this policy to refresh a query already made
+            fetchPolicy: refresh ? 'network-only' : 'cache-first'
+        } as QueryOptions<TVariables, TData>).then((apolloResult) => {
             // console.log("Got result:", result, queryId);
             setCache((prevCache) => ({
                 ...prevCache,
-                [queryId]: result as QueryResult<TData, TVariables>,
+                [queryId]: {
+                    ...apolloResult,
+                    called: true,
+                    refetch
+                 } as QueryResult<TData, TVariables>,
             }));
         }).catch((error) => {
             // console.log("Got error:", error, queryId);
             setCache((prevCache) => ({
                 ...prevCache,
                 [queryId]: {
+                    called: true,
                     loading: false,
                     error,
+                    refetch
                 } as QueryResult<TData, TVariables>,
             }));
         });

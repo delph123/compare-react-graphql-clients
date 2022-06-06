@@ -17,7 +17,7 @@ interface UsersProps {
 const Users: FC<UsersProps> = React.memo(function Users({ ageAbove, ageBelow, category, backgroundColor = 'magenta' }) {
     const renderCounter  = useRenderCounter();
 
-    const { data, loading, error } = useQuery(GetUsers, {
+    const { data, loading, error, refetch } = useQuery(GetUsers, {
         variables: {
             filters: {
                 ageAbove: ageAbove,
@@ -35,6 +35,7 @@ const Users: FC<UsersProps> = React.memo(function Users({ ageAbove, ageBelow, ca
         }}>
             [{renderCounter}]
             <h2 className="App-section-title">{!category ? "ALL" : category.join(' + ')} {!ageAbove ? "" : `(above ${ageAbove})`}{!ageBelow ? "" : `(below ${ageBelow})`}</h2>
+            <button onClick={() => refetch()}>Refresh</button>
             {loading ? <p><Loading /></p> : data.users.map((user: any) => {
                 return (
                     <p key={user.id}><User userId={user.id} /></p>
