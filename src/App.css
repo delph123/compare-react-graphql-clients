@@ -55,6 +55,12 @@
   filter: brightness(90%);
 }
 
+.App-header-bar > button:active,
+.App-header-subbar > *:active {
+  border: 1px solid rgb(84, 84, 84);
+  filter: brightness(95%);
+}
+
 .App-header-subbar > * {
   border: 0;
   border-radius: 13px;
