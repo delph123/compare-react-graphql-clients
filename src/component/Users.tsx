@@ -38,7 +38,7 @@ const Users: FC<UsersProps> = React.memo(function Users({ ageAbove, ageBelow, ca
             <button onClick={() => refetch()}>Refresh</button>
             {loading ? <p><Loading /></p> : data.users.map((user: any) => {
                 return (
-                    <p key={user.id}><User userId={user.id} /></p>
+                    <p key={user.uuid}><User userId={user.uuid} /></p>
                 )
             })}
         </section>

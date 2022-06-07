@@ -35,7 +35,7 @@ export function refresh(userId?: string) {
 
 export function evictApolloCache(userId: string) {
     client.cache.evict({ id: client.cache.identify({
-        id: userId,
+        uuid: userId,
         __typename: "User",
     }) });
     // Evicting records from cache causes some unreachable

@@ -19,7 +19,7 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 
     if (result == null || result?.called === false) {
 
-        console.log("Launching query:", queryId);
+        // console.log("Launching query:", queryId);
 
         const refresh = result?.called === false;
 
