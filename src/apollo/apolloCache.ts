@@ -17,7 +17,7 @@ const apolloCache = new InMemoryCache({
 								__typename: 'User',
 								uuid: args?.uuid,
 							});
-						}
+						},
 					},
 					users: {
 						read(value, { args, toReference, canRead }) {
@@ -33,9 +33,12 @@ const apolloCache = new InMemoryCache({
 									return [userRef];
 								}
 							}
-						}
+						},
 					},
 				}
+			},
+			User: {
+				keyFields: ["uuid"],
 			},
 		}
 	});
