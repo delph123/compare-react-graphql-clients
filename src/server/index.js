@@ -11,14 +11,14 @@ var schema = buildSchema(`
     HUMAN
   }
   input UserFilter {
-    id: String
-    inIds: [String]
+    uuid: String
+    inUuids: [String]
     ageBelow: Int
     ageAbove: Int
     types: [Type]
   }
   type User {
-    id: String
+    uuid: String
     firstName: String
     lastName: String
     age: Int
@@ -27,7 +27,7 @@ var schema = buildSchema(`
   }
   type Query {
     users(filters: UserFilter): [User]
-    user(id: ID!): User
+    user(uuid: ID!): User
   }
 `);
 
@@ -52,7 +52,7 @@ function pickOneOf(list, number) {
 
 async function generateUser(number) {
   return {
-    id: "user-" + number,
+    uuid: "user-" + number,
     firstName: pickOneOf(["John", "Luc", "Jack", "Elie", "Leo", "Lea", "Julie", "Ralf", "Nick"], number),
     lastName: pickOneOf(["Curd", "Voly", "Ramon", "Latif", "Trebor", "Balt", "Colve", "Volver"], number),
     age: random(37, number) + 18,
@@ -66,24 +66,24 @@ async function generateMultiUser(numberOfUser) {
   return new Array(numberOfUser).fill(0).map(() => random(2000000000)).map(generateUser)
 }
 
-async function getUsers({ filters: { id, inIds, ageBelow, ageAbove, types } }) {
+async function getUsers({ filters: { uuid, inUuids, ageBelow, ageAbove, types } }) {
   await sleep(30);
   let users = [];
-  if (id) {
-    users.push(generateUser(id.substring(5)));
+  if (uuid) {
+    users.push(await generateUser(uuid.substring(5)));
   } else {
     users = await Promise.all(new Array(50).fill(0).map((v, i) => i).map(generateUser));
   }
-  if (inIds) users = users.filter(u => inIds.includes(u.id))
-  if (ageBelow) users = users.filter(u => u.age <= ageBelow)
-  if (ageAbove) users = users.filter(u => u.age >= ageAbove)
-  if (types) users = users.filter(u => types.includes(u.type))
+  if (inUuids) users = users.filter(u => inUuids.includes(u.uuid));
+  if (ageBelow) users = users.filter(u => u.age <= ageBelow);
+  if (ageAbove) users = users.filter(u => u.age >= ageAbove);
+  if (types) users = users.filter(u => types.includes(u.type));
   return users
 }
 
-async function getUser({id}) {
-  await sleep(5 * (parseInt(id.substring(5))) % 3);
-  return generateUser(id.substring(5));
+async function getUser({uuid}) {
+  await sleep(5 * (parseInt(uuid.substring(5))) % 3);
+  return generateUser(uuid.substring(5));
 }
 
 // The root provides a resolver function for each API endpoint

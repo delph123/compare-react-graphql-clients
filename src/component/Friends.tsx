@@ -43,7 +43,7 @@ const Friends: FC<FriendsProps> = React.memo(function Friends({ userId, backgrou
             </div>
             {loading ? <p><Loading /></p> : friends.map((friend: any, i: number) => {
                 return (
-                    <p key={friend.id}>({i+1}/{friends.length}) <User userId={friend.id} /></p>
+                    <p key={friend.uuid}>({i+1}/{friends.length}) <User userId={friend.uuid} /></p>
                 );
             })}
         </section>

@@ -15,7 +15,7 @@ const apolloCache = new InMemoryCache({
 							if (value != null) return value;
 							return toReference({
 								__typename: 'User',
-								id: args?.id,
+								uuid: args?.uuid,
 							});
 						}
 					},
@@ -24,10 +24,10 @@ const apolloCache = new InMemoryCache({
 							if (value != null) {
 								return value.filter(canRead).length === value.length ? value : undefined;
 							}
-							if (typeof args?.filters?.id === "string") {
+							if (typeof args?.filters?.uuid === "string") {
 								const userRef = toReference({
 									__typename: 'User',
-									id: args.filters.id,
+									uuid: args.filters.uuid,
 								});
 								if (canRead(userRef)) {
 									return [userRef];
