@@ -1,4 +1,5 @@
 import { OperationVariables, QueryHookOptions, QueryOptions, QueryResult, TypedDocumentNode, useQuery as useApolloQuery } from "@apollo/client";
+import { DocumentNode } from 'graphql';
 import { client as apolloClient } from "../apollo/ApolloWrapper";
 import { globalQueryCache } from "../apollo/localState";
 import useLocalState from "./useLocalState";
@@ -6,7 +7,7 @@ import useLocalState from "./useLocalState";
 const USE_APOLLO_HOOK = false;
 
 function useReduxQuery<TData = any, TVariables = OperationVariables>(
-    query: TypedDocumentNode<TData, TVariables>,
+    query: DocumentNode | TypedDocumentNode<TData, TVariables>,
     options?: QueryHookOptions<TData, TVariables>
 ): QueryResult<TData, TVariables> {
 
