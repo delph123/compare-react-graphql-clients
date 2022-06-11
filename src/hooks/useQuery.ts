@@ -12,7 +12,7 @@ import { client as apolloClient } from "../apollo/ApolloWrapper";
 import { globalQueryCache } from "../apollo/localState";
 import useLocalState from "./useLocalState";
 
-const USE_QUERY_LIBRARY = "useWrappedRectQuery";
+const USE_QUERY_LIBRARY = "useReduxQuery";
 
 async function fetchGraphQLQuery<TData = any, TVariables = OperationVariables>({
 	queryKey: [query, options],
@@ -93,15 +93,10 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 			}));
 		};
 
-		// Add loading state in the cache to avoid duplicate call to apollo
 		result = { loading: true, refetch, called: true } as QueryResult<
 			TData,
 			TVariables
 		>;
-		setCache((prevCache) => ({
-			...prevCache,
-			[queryId]: result,
-		}));
 
 		// Launch query
 		apolloClient
