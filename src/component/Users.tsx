@@ -26,7 +26,7 @@ const Users: FC<UsersProps> = React.memo(function Users({ ageAbove, ageBelow, ca
             }
         }
     });
-  
+
     if (error) return <div><p>Error :-/</p><p>Caused by: {error.message}</p></div>;
 
     return (
@@ -43,7 +43,7 @@ const Users: FC<UsersProps> = React.memo(function Users({ ageAbove, ageBelow, ca
             })}
         </section>
     );
-    
+
 });
 
 export default Users;

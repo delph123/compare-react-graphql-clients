@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-interface LoadingProps {} 
+interface LoadingProps {}
 
 // Loading is a Pure Components w.r.t. its props so we can encaspsulate it
 // in React.memo to avoid re-rendering when no prop has changed.

@@ -11,19 +11,23 @@ function setReactiveVar<T>(variable: ReactiveVar<T>) {
 		} else {
 			variable(value);
 		}
-	}
+	};
 }
 
-function useReactiveVarState<T>(variable: ReactiveVar<T>): [T, Dispatch<SetStateAction<T>>] {
+function useReactiveVarState<T>(
+	variable: ReactiveVar<T>
+): [T, Dispatch<SetStateAction<T>>] {
 	const value = useReactiveVar(variable);
 	return [value, setReactiveVar(variable)];
 }
 
-function useReactState<T>(variable: ReactiveVar<T>): [T, Dispatch<SetStateAction<T>>] {
+function useReactState<T>(
+	variable: ReactiveVar<T>
+): [T, Dispatch<SetStateAction<T>>] {
 	const initialValue = variable();
 	return useState(initialValue);
 }
 
 const useLocalState = USE_REACT_STATE ? useReactState : useReactiveVarState;
 
-export default useLocalState
+export default useLocalState;
