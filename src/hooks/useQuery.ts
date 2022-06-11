@@ -7,47 +7,53 @@ import {
 	useQuery as useApolloQuery,
 } from "@apollo/client";
 import { DocumentNode } from "graphql";
-import { useCallback } from "react";
-import { useQuery as useReactQuery } from "react-query";
+import { useQuery as useReactQuery, useQueryClient } from "react-query";
 import { client as apolloClient } from "../apollo/ApolloWrapper";
 import { globalQueryCache } from "../apollo/localState";
 import useLocalState from "./useLocalState";
 
 const USE_QUERY_LIBRARY = "useWrappedRectQuery";
 
-function fetchGraphQLQuery<TData = any, TVariables = OperationVariables>(
-	query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-	options?: QueryHookOptions<TData, TVariables>
-) {
+async function fetchGraphQLQuery<TData = any, TVariables = OperationVariables>({
+	queryKey: [query, options],
+}: {
+	queryKey: [
+		query: DocumentNode | TypedDocumentNode<TData, TVariables>,
+		options?: QueryHookOptions<TData, TVariables>
+	];
+}) {
 	// Use apollo client as fetch library for react-query
 	// Prevent apollo from caching to simulate a "pure" react-query
 	// experience (auto-refresh on focus for example)
-	return apolloClient.query({
+	const result = await apolloClient.query({
 		...options,
 		query,
 		fetchPolicy: "no-cache",
-	} as QueryOptions<TVariables, TData>);
+	});
+
+	return result.data;
 }
 
 function useWrappedRectQuery<TData = any, TVariables = OperationVariables>(
 	query: DocumentNode | TypedDocumentNode<TData, TVariables>,
 	options?: QueryHookOptions<TData, TVariables>
 ): QueryResult<TData, TVariables> {
+	const queryClient = useQueryClient();
 	const { isLoading, data, error } = useReactQuery(
-		[query, options?.variables],
-		() => fetchGraphQLQuery(query, options),
+		[query, options],
+		fetchGraphQLQuery as any,
 		{
 			staleTime: 30000, // Avoid too much refreshes
 		}
 	);
 
-	const refetch = useCallback(() => {
-		console.log([query, options?.variables]);
-	}, [query, options?.variables]);
+	const refetch = () => {
+		queryClient.invalidateQueries([query, options]);
+	};
 
 	return {
 		loading: isLoading,
-		data: data?.data,
+		data,
 		error,
 		refetch,
 	} as QueryResult<TData, TVariables>;
