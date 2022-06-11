@@ -17,7 +17,7 @@ const UserDetails: FC<UserDetailsProps> = function () {
     const params = useParams() as { userId: string };
     const navigate = useNavigate();
     const userId = `user-${params.userId}`;
-  
+
     return (
       <>
         <Header color={color} onColorChanged={setColor}>

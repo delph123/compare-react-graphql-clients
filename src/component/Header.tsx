@@ -13,7 +13,7 @@ type HeaderProps = PropsWithChildren<{
 const Header: FC<HeaderProps> = React.memo(function Header({ children, color, onColorChanged }) {
     const renderCounter  = useRenderCounter();
     const params = useParams();
-    
+
     return <header className="App-header">
         <div className="background" style={{ backgroundColor: color }}>[{renderCounter}]</div>
         {children}
