@@ -7,11 +7,51 @@ import {
 	useQuery as useApolloQuery,
 } from "@apollo/client";
 import { DocumentNode } from "graphql";
+import { useCallback } from "react";
+import { useQuery as useReactQuery } from "react-query";
 import { client as apolloClient } from "../apollo/ApolloWrapper";
 import { globalQueryCache } from "../apollo/localState";
 import useLocalState from "./useLocalState";
 
-const USE_APOLLO_HOOK = false;
+const USE_QUERY_LIBRARY = "useWrappedRectQuery";
+
+function fetchGraphQLQuery<TData = any, TVariables = OperationVariables>(
+	query: DocumentNode | TypedDocumentNode<TData, TVariables>,
+	options?: QueryHookOptions<TData, TVariables>
+) {
+	// Use apollo client as fetch library for react-query
+	// Prevent apollo from caching to simulate a "pure" react-query
+	// experience (auto-refresh on focus for example)
+	return apolloClient.query({
+		...options,
+		query,
+		fetchPolicy: "no-cache",
+	} as QueryOptions<TVariables, TData>);
+}
+
+function useWrappedRectQuery<TData = any, TVariables = OperationVariables>(
+	query: DocumentNode | TypedDocumentNode<TData, TVariables>,
+	options?: QueryHookOptions<TData, TVariables>
+): QueryResult<TData, TVariables> {
+	const { isLoading, data, error } = useReactQuery(
+		[query, options?.variables],
+		() => fetchGraphQLQuery(query, options),
+		{
+			staleTime: 30000, // Avoid too much refreshes
+		}
+	);
+
+	const refetch = useCallback(() => {
+		console.log([query, options?.variables]);
+	}, [query, options?.variables]);
+
+	return {
+		loading: isLoading,
+		data: data?.data,
+		error,
+		refetch,
+	} as QueryResult<TData, TVariables>;
+}
 
 function useReduxQuery<TData = any, TVariables = OperationVariables>(
 	query: DocumentNode | TypedDocumentNode<TData, TVariables>,
@@ -94,6 +134,8 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 	return result;
 }
 
-const useQuery = USE_APOLLO_HOOK ? useApolloQuery : useReduxQuery;
+const useQuery = { useApolloQuery, useReduxQuery, useWrappedRectQuery }[
+	USE_QUERY_LIBRARY
+];
 
 export default useQuery;
