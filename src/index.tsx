@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ApolloWrapper from './apollo/ApolloWrapper'
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import './index.css';
 
@@ -10,10 +11,15 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+ // Create a react-query client
+ const queryClient = new QueryClient();
+
 root.render(
   <React.StrictMode>
     <ApolloWrapper>
-      <App />
+		<QueryClientProvider client={queryClient}>
+			<App />
+		</QueryClientProvider>
     </ApolloWrapper>
   </React.StrictMode>
 );
