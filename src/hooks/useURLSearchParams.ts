@@ -1,15 +1,16 @@
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getConfigFromSearchParams } from "../config/parameters";
+import { query, store } from "../config/parameters";
 
 function useURLSearchParams() {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [, setSearchParams] = useSearchParams();
 	return useMemo(() => {
 		return {
-			...getConfigFromSearchParams(searchParams),
+			query,
+			store,
 			setSearchParams,
 		};
-	}, [searchParams, setSearchParams]);
+	}, [setSearchParams]);
 }
 
 export default useURLSearchParams;
