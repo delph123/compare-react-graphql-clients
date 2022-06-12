@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
+import { getConfigFromSearchParams } from "../config/parameters";
 
 function useURLSearchParams() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	return useMemo(() => {
 		return {
-			store: searchParams.get("store") || "reactive-var",
-			query: searchParams.get("query") || "redux",
+			...getConfigFromSearchParams(searchParams),
 			setSearchParams,
 		};
 	}, [searchParams, setSearchParams]);

@@ -1,7 +1,6 @@
 import { useReactiveVar, ReactiveVar } from "@apollo/client";
 import { Dispatch, SetStateAction, useState } from "react";
-
-const USE_REACT_STATE = false;
+import { USE_STORE_LIBRARY } from "../config/parameters";
 
 function setReactiveVar<T>(variable: ReactiveVar<T>) {
 	return function (value: SetStateAction<T>) {
@@ -28,6 +27,6 @@ function useReactState<T>(
 	return useState(initialValue);
 }
 
-const useLocalState = USE_REACT_STATE ? useReactState : useReactiveVarState;
+const useLocalState = { useReactState, useReactiveVarState }[USE_STORE_LIBRARY];
 
 export default useLocalState;

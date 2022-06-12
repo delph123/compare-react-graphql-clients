@@ -10,9 +10,8 @@ import { DocumentNode } from "graphql";
 import { useQuery as useReactQuery, useQueryClient } from "react-query";
 import { client as apolloClient } from "../apollo/ApolloWrapper";
 import { globalQueryCache } from "../apollo/localState";
+import { USE_QUERY_LIBRARY } from "../config/parameters";
 import useLocalState from "./useLocalState";
-
-const USE_QUERY_LIBRARY = "useReduxQuery";
 
 async function fetchGraphQLQuery<TData = any, TVariables = OperationVariables>({
 	queryKey: [query, options],

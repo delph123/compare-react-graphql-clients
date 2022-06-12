@@ -5,6 +5,10 @@ import {
 	refresh,
 	resetApolloCache,
 } from "../apollo/localState";
+import {
+	QUERY_LIBRARY_CHOICES,
+	STORE_LIBRARY_CHOICES,
+} from "../config/parameters";
 import useRenderCounter from "../hooks/useRenderCounter";
 import useURLSearchParams from "../hooks/useURLSearchParams";
 import RadioSet from "./RadioSet";
@@ -61,33 +65,30 @@ const Header: FC<HeaderProps> = React.memo(function Header({
 				className="App-header-choice App-choice-store"
 				name="store"
 				legend="Store"
-				choices={[
-					{ id: "react-state", label: "React State" },
-					{ id: "reactive-var", label: "Reactive Var" },
-				]}
+				choices={STORE_LIBRARY_CHOICES}
 				selected={store}
 				onSelect={(evt) => {
 					setSearchParams({
 						store: evt.target.id,
 						query,
 					});
+					// Reload page to apply change
+					window.location.reload();
 				}}
 			/>
 			<RadioSet
 				className="App-header-choice App-choice-query"
 				name="query"
 				legend="Query"
-				choices={[
-					{ id: "apollo", label: "Apollo" },
-					{ id: "redux", label: "Redux" },
-					{ id: "react-query", label: "React Query" },
-				]}
+				choices={QUERY_LIBRARY_CHOICES}
 				selected={query}
 				onSelect={(evt) => {
 					setSearchParams({
 						store,
 						query: evt.target.id,
 					});
+					// Reload page to apply change
+					window.location.reload();
 				}}
 			/>
 		</header>
