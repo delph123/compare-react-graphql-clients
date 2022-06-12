@@ -55,6 +55,20 @@
   filter: brightness(90%);
 }
 
+.App-header-choice {
+	position: absolute;
+	top: 5px;
+	font-size: 12px;
+}
+
+.App-choice-query {
+	right: 5px;
+}
+
+.App-choice-store {
+	right: 127px;
+}
+
 .App-header-bar > button:active,
 .App-header-subbar > *:active {
   border: 1px solid rgb(84, 84, 84);
