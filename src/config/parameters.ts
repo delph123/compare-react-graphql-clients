@@ -26,7 +26,7 @@ export function getConfigFromSearchParams(searchParams: URLSearchParams) {
 	};
 }
 
-const { query, store } = getConfigFromSearchParams(
+export const { query, store } = getConfigFromSearchParams(
 	new URLSearchParams(window.location.search)
 );
 
