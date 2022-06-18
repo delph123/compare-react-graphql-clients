@@ -15,6 +15,9 @@ export const queryCacheSlice = createSlice({
 	name: "queryCache",
 	initialState,
 	reducers: {
+		clearQueryCache() {
+			return {};
+		},
 		addToCache(
 			state,
 			{ payload: { queryId, result } }: PayloadAction<CacheResult>
@@ -25,7 +28,7 @@ export const queryCacheSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCache } = queryCacheSlice.actions;
+export const { clearQueryCache, addToCache } = queryCacheSlice.actions;
 
 // Selectors
 export const queryCacheSelector = (state: RootState) => state.queryCache;

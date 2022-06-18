@@ -11,6 +11,7 @@ import {
 } from "../config/parameters";
 import useRenderCounter from "../hooks/useRenderCounter";
 import useURLSearchParams from "../hooks/useURLSearchParams";
+import { useAppDispatch } from "../redux/hooks";
 import RadioSet from "./RadioSet";
 
 type HeaderProps = PropsWithChildren<{
@@ -28,6 +29,7 @@ const Header: FC<HeaderProps> = React.memo(function Header({
 	const renderCounter = useRenderCounter();
 	const params = useParams();
 	const { store, query, setSearchParams } = useURLSearchParams();
+	const dispatch = useAppDispatch();
 
 	return (
 		<header className="App-header">
@@ -36,7 +38,7 @@ const Header: FC<HeaderProps> = React.memo(function Header({
 			</div>
 			{children}
 			<div className="App-header-subbar">
-				<button onClick={clearGlobalQueryCache}>
+				<button onClick={() => clearGlobalQueryCache(dispatch)}>
 					Clear Redux Cache
 				</button>
 				<button onClick={resetApolloCache}>Reset Apollo Cache</button>
@@ -46,7 +48,7 @@ const Header: FC<HeaderProps> = React.memo(function Header({
 					value={color}
 					name="pick a color"
 				/>
-				<button onClick={() => refresh(params?.userId)}>
+				<button onClick={() => refresh(dispatch, params?.userId)}>
 					Refresh
 					{params?.userId != null
 						? ` (usr ${
