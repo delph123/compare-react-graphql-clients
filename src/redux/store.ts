@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import localStateReducer from "./slices/localStateSlice";
+import queryCacheReducer from "./slices/queryCacheSlice";
 
 export const store = configureStore({
 	reducer: {
 		localState: localStateReducer,
+		queryCache: queryCacheReducer,
 	},
 });
 
