@@ -49,9 +49,9 @@ const Users: FC<UsersProps> = React.memo(function Users({
 		>
 			[{renderCounter}]
 			<h2 className="App-section-title">
-				{!category ? "ALL" : category.join(" + ")}{" "}
-				{!ageAbove ? "" : `(above ${ageAbove})`}
-				{!ageBelow ? "" : `(below ${ageBelow})`}
+				{!category ? "ALL" : category.join(" + ")}
+				{!ageAbove ? "" : ` (above ${ageAbove})`}
+				{!ageBelow ? "" : ` (below ${ageBelow})`}
 			</h2>
 			<button onClick={() => refetch()}>Refresh</button>
 			{!data && loading ? (
