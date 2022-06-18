@@ -4,12 +4,6 @@ import useLocalState from "../hooks/useLocalState";
 import useQuery from "../hooks/useQuery";
 import useRenderCounter from "../hooks/useRenderCounter";
 import { GetFriends } from "../queries/users";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import {
-	decrementNumberOfFriends,
-	incrementNumberOfFriends,
-	numberOfFriendsSelector,
-} from "../redux/slices/localStateSlice";
 import Loading from "./Loading";
 import User from "./User";
 
@@ -29,17 +23,7 @@ const Friends: FC<FriendsProps> = React.memo(function Friends({
 }) {
 	const renderCounter = useRenderCounter();
 
-	// const [nbFriends, setNbFriends] = useLocalState(numberOfFriendsVar);
-	const dispatch = useAppDispatch();
-	const nbFriends = useAppSelector(numberOfFriendsSelector);
-	const setNbFriends = (action: (n: number) => number) => {
-		if (action === increment) {
-			dispatch(incrementNumberOfFriends());
-		}
-		if (action === decrement) {
-			dispatch(decrementNumberOfFriends());
-		}
-	};
+	const [nbFriends, setNbFriends] = useLocalState(numberOfFriendsVar);
 
 	const {
 		data: { user: { friends } } = { user: { friends: [] } },

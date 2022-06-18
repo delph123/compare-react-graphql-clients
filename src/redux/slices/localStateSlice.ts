@@ -15,14 +15,8 @@ export const localStateSlice = createSlice({
 	name: "localState",
 	initialState,
 	reducers: {
-		incrementNumberOfFriends(state) {
-			state.numberOfFriends += 1;
-		},
-		decrementNumberOfFriends(state) {
-			state.numberOfFriends -= 1;
-		},
-		setNumberOfFriends(state, action: PayloadAction<number>) {
-			state.numberOfFriends = action.payload;
+		incrementNumberOfFriendsByAmount(state, action: PayloadAction<number>) {
+			state.numberOfFriends += action.payload;
 		},
 		setBackgroundColor(state, action: PayloadAction<string>) {
 			state.backgroundColor = action.payload;
@@ -31,12 +25,8 @@ export const localStateSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {
-	incrementNumberOfFriends,
-	decrementNumberOfFriends,
-	setBackgroundColor,
-	setNumberOfFriends,
-} = localStateSlice.actions;
+export const { incrementNumberOfFriendsByAmount, setBackgroundColor } =
+	localStateSlice.actions;
 
 // Selectors
 export const numberOfFriendsSelector = (state: RootState) =>

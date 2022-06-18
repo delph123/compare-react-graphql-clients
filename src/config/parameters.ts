@@ -1,5 +1,5 @@
 type UseQueryHook = "useApolloQuery" | "useReduxQuery" | "useWrappedRectQuery";
-type UseStateHook = "useReactState" | "useReactiveVarState";
+type UseStateHook = "useReactState" | "useReactiveVarState" | "useReduxState";
 type LibraryChoice<T> = {
 	id: string;
 	label: string;
@@ -17,6 +17,7 @@ export const QUERY_LIBRARY_CHOICES: LibraryChoice<UseQueryHook>[] = [
 export const STORE_LIBRARY_CHOICES: LibraryChoice<UseStateHook>[] = [
 	{ id: "react-state", label: "React State", hook: "useReactState" },
 	{ id: "reactive-var", label: "Reactive Var", hook: "useReactiveVarState" },
+	{ id: "redux", label: "Redux", hook: "useReduxState" },
 ];
 
 export function getConfigFromSearchParams(searchParams: URLSearchParams) {
