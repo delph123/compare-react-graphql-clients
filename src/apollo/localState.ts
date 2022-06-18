@@ -1,4 +1,6 @@
 import { makeVar, QueryResult } from "@apollo/client";
+import { clearQueryCache } from "../redux/slices/queryCacheSlice";
+import { AppDispatch } from "../redux/store";
 import { client } from "./ApolloWrapper";
 
 export const backgroundColorVar = makeVar("#E6E6FA");
@@ -6,8 +8,9 @@ export const numberOfFriendsVar = makeVar(10);
 
 export const globalQueryCache = makeVar({} as Record<string, QueryResult>);
 
-export function clearGlobalQueryCache() {
+export function clearGlobalQueryCache(dispatch: AppDispatch) {
 	globalQueryCache({});
+	dispatch(clearQueryCache());
 }
 
 export function resetApolloCache() {
@@ -18,17 +21,17 @@ export function clearApolloCache() {
 	client.clearStore();
 }
 
-export function refresh(userId?: string) {
+export function refresh(dispatch: AppDispatch, userId?: string) {
 	if (userId) {
 		evictApolloCache("user-" + userId);
 		// evictGlobalQueryCache(userId);
-		clearGlobalQueryCache();
+		clearGlobalQueryCache(dispatch);
 	} else {
 		// Evict GetUsers from ROOT_QUERY
 		client.cache.evict({
 			fieldName: "users",
 		});
-		clearGlobalQueryCache();
+		clearGlobalQueryCache(dispatch);
 	}
 }
 
