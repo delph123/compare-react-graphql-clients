@@ -39,7 +39,7 @@ const Header: FC<HeaderProps> = React.memo(function Header({
 			{children}
 			<div className="App-header-subbar">
 				<button onClick={() => clearGlobalQueryCache(dispatch)}>
-					Clear Redux Cache
+					Clear Store Cache
 				</button>
 				<button onClick={resetApolloCache}>Reset Apollo Cache</button>
 				<input
