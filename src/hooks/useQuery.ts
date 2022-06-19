@@ -10,29 +10,12 @@ import { DocumentNode } from "graphql";
 import { useQuery as useReactQuery, useQueryClient } from "react-query";
 import { client as apolloClient } from "../apollo/ApolloWrapper";
 import { globalQueryCache } from "../apollo/localState";
-import { USE_QUERY_LIBRARY } from "../config/parameters";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { USE_QUERY_LIBRARY, USE_STORE_LIBRARY } from "../config/parameters";
 import useLocalState from "./useLocalState";
-
-async function fetchGraphQLQuery<TData = any, TVariables = OperationVariables>({
-	queryKey: [query, options],
-}: {
-	queryKey: [
-		query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-		options?: QueryHookOptions<TData, TVariables>
-	];
-}) {
-	// Use apollo client as fetch library for react-query
-	// Prevent apollo from caching to simulate a "pure" react-query
-	// experience (auto-refresh on focus for example)
-	const result = await apolloClient.query({
-		...options,
-		query,
-		fetchPolicy: "no-cache",
-	});
-
-	return result.data;
-}
+import { useEffect } from "react";
+import fetchApolloQuery from "../queries/fetchApolloQuery";
+import getReduxQueryInterfaceFor from "../redux/mappings/queryInterfaceMapping";
 
 function useWrappedRectQuery<TData = any, TVariables = OperationVariables>(
 	query: DocumentNode | TypedDocumentNode<TData, TVariables>,
@@ -41,7 +24,7 @@ function useWrappedRectQuery<TData = any, TVariables = OperationVariables>(
 	const queryClient = useQueryClient();
 	const { isLoading, data, error } = useReactQuery(
 		[query, options],
-		fetchGraphQLQuery as any,
+		fetchApolloQuery as any,
 		{
 			staleTime: 30000, // Avoid too much refreshes
 		}
@@ -59,7 +42,7 @@ function useWrappedRectQuery<TData = any, TVariables = OperationVariables>(
 	} as QueryResult<TData, TVariables>;
 }
 
-function useReduxQuery<TData = any, TVariables = OperationVariables>(
+function useReduxQueryAlt<TData = any, TVariables = OperationVariables>(
 	query: DocumentNode | TypedDocumentNode<TData, TVariables>,
 	options?: QueryHookOptions<TData, TVariables>
 ): QueryResult<TData, TVariables> {
@@ -133,8 +116,52 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 	return result;
 }
 
-const useQuery = { useApolloQuery, useReduxQuery, useWrappedRectQuery }[
-	USE_QUERY_LIBRARY
-];
+function useReduxQuery<TData = any, TVariables = OperationVariables>(
+	query: DocumentNode | TypedDocumentNode<TData, TVariables>,
+	options?: QueryHookOptions<TData, TVariables>
+): QueryResult<TData, TVariables> {
+	const { selectorCreator, thunkCreator } = getReduxQueryInterfaceFor(query);
+	const dispatch = useAppDispatch();
+
+	const refetch = () => {
+		dispatch(
+			thunkCreator({
+				queryKey: [query, options as QueryHookOptions | undefined],
+			})
+		);
+	};
+
+	const queryResponse = useAppSelector(selectorCreator(options?.variables));
+
+	useEffect(
+		() => {
+			// Fetch only if data is not already in the store
+			// (query might be already loading and it may result in
+			// a duplicate query but apollo takes care of it)
+			if (queryResponse.loading === "idle") {
+				refetch();
+			}
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[query, JSON.stringify(options)]
+	);
+
+	return {
+		loading:
+			queryResponse.loading === "idle" ||
+			queryResponse.loading === "pending",
+		refetch,
+		data: queryResponse.data,
+	} as unknown as QueryResult<TData, TVariables>;
+}
+
+const useQuery = {
+	useApolloQuery,
+	useReduxQuery:
+		USE_STORE_LIBRARY === "useReduxState"
+			? useReduxQuery
+			: useReduxQueryAlt,
+	useWrappedRectQuery,
+}[USE_QUERY_LIBRARY];
 
 export default useQuery;
