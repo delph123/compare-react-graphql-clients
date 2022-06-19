@@ -11,6 +11,7 @@ import { useQuery as useReactQuery, useQueryClient } from "react-query";
 import { client as apolloClient } from "../apollo/ApolloWrapper";
 import { globalQueryCache } from "../apollo/localState";
 import { USE_QUERY_LIBRARY } from "../config/parameters";
+import { useAppDispatch } from "../redux/hooks";
 import useLocalState from "./useLocalState";
 
 async function fetchGraphQLQuery<TData = any, TVariables = OperationVariables>({
@@ -62,6 +63,8 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 	query: DocumentNode | TypedDocumentNode<TData, TVariables>,
 	options?: QueryHookOptions<TData, TVariables>
 ): QueryResult<TData, TVariables> {
+	const dispatch = useAppDispatch();
+
 	const [cache, setCache] = useLocalState<
 		Record<string, QueryResult<TData, TVariables>>
 	>(globalQueryCache as any);
@@ -94,35 +97,37 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 		>;
 
 		// Launch query
-		apolloClient
-			.query({
-				...options,
-				query,
-				// The network-only policy allows to bypass the apollo cache, even though it eventually
-				// stores the query result its cache. We use this policy to refresh a query already made
-				fetchPolicy: refresh ? "network-only" : "cache-first",
-			} as QueryOptions<TVariables, TData>)
-			.then((apolloResult) => {
-				setCache((prevCache) => ({
-					...prevCache,
-					[queryId]: {
-						...apolloResult,
-						called: true,
-						refetch,
-					} as QueryResult<TData, TVariables>,
-				}));
-			})
-			.catch((error) => {
-				setCache((prevCache) => ({
-					...prevCache,
-					[queryId]: {
-						called: true,
-						loading: false,
-						error,
-						refetch,
-					} as QueryResult<TData, TVariables>,
-				}));
-			});
+		dispatch(() => {
+			apolloClient
+				.query({
+					...options,
+					query,
+					// The network-only policy allows to bypass the apollo cache, even though it eventually
+					// stores the query result its cache. We use this policy to refresh a query already made
+					fetchPolicy: refresh ? "network-only" : "cache-first",
+				} as QueryOptions<TVariables, TData>)
+				.then((apolloResult) => {
+					setCache((prevCache) => ({
+						...prevCache,
+						[queryId]: {
+							...apolloResult,
+							called: true,
+							refetch,
+						} as QueryResult<TData, TVariables>,
+					}));
+				})
+				.catch((error) => {
+					setCache((prevCache) => ({
+						...prevCache,
+						[queryId]: {
+							called: true,
+							loading: false,
+							error,
+							refetch,
+						} as QueryResult<TData, TVariables>,
+					}));
+				});
+		});
 	}
 
 	return result;
