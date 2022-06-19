@@ -1,11 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
+import friendsSlice from "./slices/friendsSlice";
 import localStateReducer from "./slices/localStateSlice";
 import queryCacheReducer from "./slices/queryCacheSlice";
+import userSlice from "./slices/userSlice";
+import usersQuerySlice from "./slices/usersQuerySlice";
 
 export const store = configureStore({
 	reducer: {
 		localState: localStateReducer,
 		queryCache: queryCacheReducer,
+		usersQuery: usersQuerySlice,
+		user: userSlice,
+		friends: friendsSlice,
 	},
 });
 

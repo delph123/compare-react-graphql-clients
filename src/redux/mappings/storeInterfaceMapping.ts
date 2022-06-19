@@ -5,34 +5,34 @@ import {
 	backgroundColorVar,
 	globalQueryCache,
 	numberOfFriendsVar,
-} from "../apollo/localState";
+} from "../../apollo/localState";
 import {
 	backgroundColorSelector,
 	incrementNumberOfFriendsByAmount,
 	numberOfFriendsSelector,
 	setBackgroundColor,
-} from "./slices/localStateSlice";
-import { addToCache, queryCacheSelector } from "./slices/queryCacheSlice";
-import { RootState } from "./store";
+} from "../slices/localStateSlice";
+import { addToCache, queryCacheSelector } from "../slices/queryCacheSlice";
+import { RootState } from "../store";
 
-export interface ReduxInterface<T> {
+export interface ReduxStoreInterface<T> {
 	selector: (state: RootState) => T;
 	actionCreator: (action: SetStateAction<T>) => AnyAction;
 }
 
-const reduxMapping = new Map<ReactiveVar<any>, ReduxInterface<any>>();
+const reduxStoreMapping = new Map<ReactiveVar<any>, ReduxStoreInterface<any>>();
 
-function setReduxInterfactMapping<T>(
+function setReduxStoreInterfactMapping<T>(
 	variable: ReactiveVar<T>,
-	reduxInterface: ReduxInterface<T>
+	reduxInterface: ReduxStoreInterface<T>
 ) {
-	reduxMapping.set(variable, reduxInterface);
+	reduxStoreMapping.set(variable, reduxInterface);
 }
 
-export default function getReduxInterfaceFor<T>(
+export default function getReduxStoreInterfaceFor<T>(
 	variable: ReactiveVar<T>
-): ReduxInterface<T> {
-	const intf = reduxMapping.get(variable);
+): ReduxStoreInterface<T> {
+	const intf = reduxStoreMapping.get(variable);
 	if (intf != null) {
 		return intf;
 	} else {
@@ -41,7 +41,7 @@ export default function getReduxInterfaceFor<T>(
 }
 
 // Background Color
-setReduxInterfactMapping(backgroundColorVar, {
+setReduxStoreInterfactMapping(backgroundColorVar, {
 	selector: backgroundColorSelector,
 	actionCreator(color) {
 		return setBackgroundColor(color as string);
@@ -49,7 +49,7 @@ setReduxInterfactMapping(backgroundColorVar, {
 });
 
 // Number of Friends
-setReduxInterfactMapping(numberOfFriendsVar, {
+setReduxStoreInterfactMapping(numberOfFriendsVar, {
 	selector: numberOfFriendsSelector,
 	actionCreator(action) {
 		const computeAmount = action as (n: number) => number;
@@ -58,7 +58,7 @@ setReduxInterfactMapping(numberOfFriendsVar, {
 });
 
 // Query Cache
-setReduxInterfactMapping(globalQueryCache, {
+setReduxStoreInterfactMapping(globalQueryCache, {
 	selector: queryCacheSelector,
 	actionCreator(action) {
 		const cacheAdder = action as (
