@@ -29,7 +29,7 @@ function setReduxInterfactMapping<T>(
 	reduxMapping.set(variable, reduxInterface);
 }
 
-export default function getReduxInterfaceMapping<T>(
+export default function getReduxInterfaceFor<T>(
 	variable: ReactiveVar<T>
 ): ReduxInterface<T> {
 	const intf = reduxMapping.get(variable);
