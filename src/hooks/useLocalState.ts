@@ -3,7 +3,7 @@ import { useReactiveVar, ReactiveVar } from "@apollo/client";
 import { Dispatch, SetStateAction, useState } from "react";
 import { USE_STORE_LIBRARY } from "../config/parameters";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import getReduxInterfaceMapping from "../redux/interfaceMapping";
+import getReduxInterfaceFor from "../redux/interfaceMapping";
 
 function setReactiveVar<T>(variable: ReactiveVar<T>) {
 	return function (value: SetStateAction<T>) {
@@ -33,7 +33,7 @@ function useReactState<T>(
 function useReduxState<T>(
 	variable: ReactiveVar<T>
 ): [T, Dispatch<SetStateAction<T>>] {
-	const { selector, actionCreator } = getReduxInterfaceMapping(variable);
+	const { selector, actionCreator } = getReduxInterfaceFor(variable);
 	const dispatch = useAppDispatch();
 	const value = useAppSelector(selector);
 	const setValue = (setStateAction: SetStateAction<T>) => {
