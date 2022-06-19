@@ -72,11 +72,7 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 		JSON.stringify(options?.variables);
 	let result = cache[queryId];
 
-	// console.log("Called useQuery on:", queryId, result);
-
 	if (result == null || result?.called === false) {
-		// console.log("Launching query:", queryId);
-
 		const refresh = result?.called === false;
 
 		// The refetch function can be used to trigger a refresh of current query
@@ -107,7 +103,6 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 				fetchPolicy: refresh ? "network-only" : "cache-first",
 			} as QueryOptions<TVariables, TData>)
 			.then((apolloResult) => {
-				// console.log("Got result:", result, queryId);
 				setCache((prevCache) => ({
 					...prevCache,
 					[queryId]: {
@@ -118,7 +113,6 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 				}));
 			})
 			.catch((error) => {
-				// console.log("Got error:", error, queryId);
 				setCache((prevCache) => ({
 					...prevCache,
 					[queryId]: {

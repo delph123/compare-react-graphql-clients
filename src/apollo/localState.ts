@@ -24,7 +24,6 @@ export function clearApolloCache() {
 export function refresh(dispatch: AppDispatch, userId?: string) {
 	if (userId) {
 		evictApolloCache("user-" + userId);
-		// evictGlobalQueryCache(userId);
 		clearGlobalQueryCache(dispatch);
 	} else {
 		// Evict GetUsers from ROOT_QUERY

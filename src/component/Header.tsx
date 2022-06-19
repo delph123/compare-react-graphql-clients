@@ -19,6 +19,20 @@ type HeaderProps = PropsWithChildren<{
 	onColorChanged: (value: string) => void;
 }>;
 
+function getRefreshLabel(userId: string | undefined | null) {
+	if (userId != null) {
+		return `Refresh (usr ${
+			userId.length > 5
+				? userId.substring(0, 2) +
+				  "..." +
+				  userId.substring(userId.length - 3)
+				: userId
+		})`;
+	} else {
+		return "Refresh (users)";
+	}
+}
+
 // Header is a Pure Components w.r.t. its props so we can encaspsulate it
 // in React.memo to avoid re-rendering when no prop has changed.
 const Header: FC<HeaderProps> = React.memo(function Header({
@@ -49,18 +63,7 @@ const Header: FC<HeaderProps> = React.memo(function Header({
 					name="pick a color"
 				/>
 				<button onClick={() => refresh(dispatch, params?.userId)}>
-					Refresh
-					{params?.userId != null
-						? ` (usr ${
-								params.userId.length > 5
-									? params.userId.substring(0, 2) +
-									  "..." +
-									  params.userId.substring(
-											params.userId.length - 3
-									  )
-									: params.userId
-						  })`
-						: " (users)"}
+					{getRefreshLabel(params?.userId)}
 				</button>
 			</div>
 			<RadioSet
