@@ -11,7 +11,7 @@ export const DEFAULT_STORE_LIBRARY = "reactive-var";
 
 export const QUERY_LIBRARY_CHOICES: LibraryChoice<UseQueryHook>[] = [
 	{ id: "apollo", label: "Apollo", hook: "useApolloQuery" },
-	{ id: "redux", label: "Redux", hook: "useReduxQuery" },
+	{ id: "redux-thunk", label: "Redux Thunk", hook: "useReduxQuery" },
 	{ id: "react-query", label: "React Query", hook: "useWrappedRectQuery" },
 ];
 export const STORE_LIBRARY_CHOICES: LibraryChoice<UseStateHook>[] = [
