@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SettingsParameters } from "../../component/SettingsDialog";
 import { RootState } from "../store";
 
@@ -60,11 +60,23 @@ export const {
 } = localStateSlice.actions;
 
 // Selectors
-export const numberOfFriendsSelector = (state: RootState) =>
-	state.localState.numberOfFriends;
-export const backgroundColorSelector = (state: RootState) =>
-	state.localState.backgroundColor;
-export const usersSettingsSelector = (side: Sides) => (state: RootState) =>
-	state.localState.usersSettings[side];
+const localStateSelector = (state: RootState) => state.localState;
+export const numberOfFriendsSelector = createSelector(
+	localStateSelector,
+	(localState) => localState.numberOfFriends
+);
+export const backgroundColorSelector = createSelector(
+	localStateSelector,
+	(localState) => localState.backgroundColor
+);
+const allUsersSettingsSelector = createSelector(
+	localStateSelector,
+	(localState) => localState.usersSettings
+);
+export const usersSettingsSelector = (side: Sides) =>
+	createSelector(
+		allUsersSettingsSelector,
+		(usersSettings) => usersSettings[side]
+	);
 
 export default localStateSlice.reducer;
