@@ -1,8 +1,9 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import useQuery from "../hooks/useQuery";
 import useRenderCounter from "../hooks/useRenderCounter";
 import { GetUsers } from "../queries/users";
 import Loading from "./Loading";
+import SettingsDialog from "./SettingsDialog";
 import User from "./User";
 
 interface UsersProps {
@@ -15,12 +16,16 @@ interface UsersProps {
 // Users is a Pure Components w.r.t. its props so we can encaspsulate it
 // in React.memo to avoid re-rendering when no prop has changed.
 const Users: FC<UsersProps> = React.memo(function Users({
-	ageAbove,
-	ageBelow,
-	category,
+	ageAbove: initialAgeAbove,
+	ageBelow: initialAgeBelow,
+	category: initialCategory,
 	backgroundColor = "magenta",
 }) {
 	const renderCounter = useRenderCounter();
+	const [settingsVisible, setSettingsVisible] = useState(false);
+	const [ageAbove, setAgeAbove] = useState(initialAgeAbove);
+	const [ageBelow, setAgeBelow] = useState(initialAgeBelow);
+	const [category, setCategory] = useState(initialCategory);
 
 	const { data, loading, error, refetch } = useQuery(GetUsers, {
 		variables: {
@@ -31,6 +36,10 @@ const Users: FC<UsersProps> = React.memo(function Users({
 			},
 		},
 	});
+
+	const openSettingsPopup = function (visible = true) {
+		setSettingsVisible(visible);
+	};
 
 	if (error)
 		return (
@@ -53,7 +62,10 @@ const Users: FC<UsersProps> = React.memo(function Users({
 				{!ageAbove ? "" : ` (above ${ageAbove})`}
 				{!ageBelow ? "" : ` (below ${ageBelow})`}
 			</h2>
-			<button onClick={() => refetch()}>Refresh</button>
+			<div className="button-row">
+				<button onClick={() => refetch()}>Refresh</button>
+				<button onClick={() => openSettingsPopup()}>Settings</button>
+			</div>
 			{!data && loading ? (
 				<p>
 					<Loading />
@@ -66,6 +78,21 @@ const Users: FC<UsersProps> = React.memo(function Users({
 						</p>
 					);
 				})
+			)}
+			{settingsVisible && (
+				<SettingsDialog
+					initialValues={{
+						ageAbove,
+						ageBelow,
+						category,
+					}}
+					save={({ ageAbove, ageBelow, category }) => {
+						setAgeAbove(ageAbove);
+						setAgeBelow(ageBelow);
+						setCategory(category);
+					}}
+					exit={() => openSettingsPopup(false)}
+				/>
 			)}
 		</section>
 	);
