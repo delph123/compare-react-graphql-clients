@@ -7,7 +7,6 @@ To be filled...
 ## To Do
 
 -   Write README.md
--   Rework redux selectors to avoid multi-refresh (while changing color for example)
 -   Avoid friends.length for getting nbFriends
 -   Implement refresh button in header for redux
 -   Adjust global store eviction as well according to same fine-grained eviction as apollo cache

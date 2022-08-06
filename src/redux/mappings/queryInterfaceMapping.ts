@@ -1,5 +1,5 @@
 import { TypedDocumentNode } from "@apollo/client";
-import { AsyncThunk } from "@reduxjs/toolkit";
+import { AsyncThunk, createSelector } from "@reduxjs/toolkit";
 import { DocumentNode } from "graphql";
 import { FetchApolloQueryParams } from "../../queries/fetchApolloQuery";
 import { GetFriends, GetUser, GetUsers } from "../../queries/users";
@@ -45,57 +45,60 @@ export default function getReduxQueryInterfaceFor<T>(
 
 // Get Users
 setReduxQueryInterfactMapping(GetUsers, {
-	selectorCreator: (variables) => (state) => {
-		const usersQuery = usersQuerySelector(
-			state,
-			JSON.stringify(variables.filters)
-		);
-		return {
-			loading: usersQuery?.loading == null ? "idle" : usersQuery.loading,
-			data:
-				usersQuery?.users != null
-					? {
-							users: usersQuery?.users,
-					  }
-					: undefined,
-		};
-	},
+	selectorCreator: (variables) =>
+		createSelector(
+			(state: RootState) =>
+				usersQuerySelector(state, JSON.stringify(variables.filters)),
+			(usersQuery) => ({
+				loading:
+					usersQuery?.loading == null ? "idle" : usersQuery.loading,
+				data:
+					usersQuery?.users != null
+						? {
+								users: usersQuery?.users,
+						  }
+						: undefined,
+			})
+		),
 	thunkCreator: fetchUsersQueryAction,
 });
 
 // Get single User
 setReduxQueryInterfactMapping(GetUser, {
-	selectorCreator: (variables) => (state) => {
-		const user = userByIdSelector(state, variables.userId);
-		return {
-			loading: user == null ? "idle" : "fulfilled",
-			data:
-				user != null
-					? {
-							users: [user],
-					  }
-					: undefined,
-		};
-	},
+	selectorCreator: (variables) =>
+		createSelector(
+			(state: RootState) => userByIdSelector(state, variables.userId),
+			(user) => ({
+				loading: user == null ? "idle" : "fulfilled",
+				data:
+					user != null
+						? {
+								users: [user],
+						  }
+						: undefined,
+			})
+		),
 	thunkCreator: fetchUserAction,
 });
 
 // Get Friends
 setReduxQueryInterfactMapping(GetFriends, {
-	selectorCreator: (variables) => (state) => {
-		const friends = friendsByIdSelector(
-			state,
-			variables.userId + ":" + variables.nbFriends
-		);
-		return {
-			loading: friends == null ? "idle" : "fulfilled",
-			data:
-				friends != null
-					? {
-							user: friends,
-					  }
-					: undefined,
-		};
-	},
+	selectorCreator: (variables) =>
+		createSelector(
+			(state: RootState) =>
+				friendsByIdSelector(
+					state,
+					variables.userId + ":" + variables.nbFriends
+				),
+			(friends) => ({
+				loading: friends == null ? "idle" : "fulfilled",
+				data:
+					friends != null
+						? {
+								user: friends,
+						  }
+						: undefined,
+			})
+		),
 	thunkCreator: fetchFriendsAction,
 });
