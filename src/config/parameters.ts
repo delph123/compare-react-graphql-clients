@@ -6,8 +6,8 @@ type LibraryChoice<T> = {
 	hook: T;
 };
 
-export const DEFAULT_QUERY_LIBRARY = "redux";
-export const DEFAULT_STORE_LIBRARY = "reactive-var";
+export const DEFAULT_QUERY_LIBRARY = "redux-thunk";
+export const DEFAULT_STORE_LIBRARY = "redux";
 
 export const QUERY_LIBRARY_CHOICES: LibraryChoice<UseQueryHook>[] = [
 	{ id: "apollo", label: "Apollo", hook: "useApolloQuery" },
