@@ -1,10 +1,22 @@
 import { makeVar, QueryResult } from "@apollo/client";
+import { SettingsParameters } from "../component/SettingsDialog";
 import { clearQueryCache } from "../redux/slices/queryCacheSlice";
 import { AppDispatch } from "../redux/store";
 import { client } from "./ApolloWrapper";
 
 export const backgroundColorVar = makeVar("#E6E6FA");
 export const numberOfFriendsVar = makeVar(10);
+
+export const usersSettingsLeftVar = makeVar({
+	ageBelow: 34,
+	categories: ["HUMAN"],
+} as SettingsParameters);
+export const usersSettingsMiddleVar = makeVar({
+	categories: ["ADMIN", "COMPUTER"],
+} as SettingsParameters);
+export const usersSettingsRightVar = makeVar({
+	ageAbove: 30,
+} as SettingsParameters);
 
 export const globalQueryCache = makeVar({} as Record<string, QueryResult>);
 
