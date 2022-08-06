@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useState } from "react";
 
-interface SettingsParameters {
+export interface SettingsParameters {
 	ageAbove?: number;
 	ageBelow?: number;
-	category?: string[];
+	categories?: string[];
 }
 
 interface SettingsDialogProps {
@@ -29,7 +29,8 @@ const SettingsDialog: FC<SettingsDialogProps> = React.memo(
 		const [ageAbove, setAgeAbove] = useState(initialValues.ageAbove);
 		const [ageBelow, setAgeBelow] = useState(initialValues.ageBelow);
 		const [categories, setCategories] = useState(
-			initialValues.category || ALL_CATEGORIES.map((c) => c.toUpperCase())
+			initialValues.categories ||
+				ALL_CATEGORIES.map((c) => c.toUpperCase())
 		);
 		const [error, setError] = useState("");
 
@@ -57,15 +58,15 @@ const SettingsDialog: FC<SettingsDialogProps> = React.memo(
 		);
 
 		const submitAndExit = () => {
-			let category: string[] | undefined = categories;
+			let submittedCategories: string[] | undefined = categories;
 			if (categories.length === 0) {
 				setError("Please select at least one category!");
 				return;
 			}
-			if (categories.length === ALL_CATEGORIES.length) {
-				category = undefined;
+			if (submittedCategories.length === ALL_CATEGORIES.length) {
+				submittedCategories = undefined;
 			}
-			save({ ageAbove, ageBelow, category });
+			save({ ageAbove, ageBelow, categories: submittedCategories });
 			exit();
 		};
 

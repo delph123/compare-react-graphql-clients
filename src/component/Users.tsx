@@ -1,45 +1,37 @@
-import React, { FC, useState } from "react";
+import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import useQuery from "../hooks/useQuery";
 import useRenderCounter from "../hooks/useRenderCounter";
 import { GetUsers } from "../queries/users";
 import Loading from "./Loading";
-import SettingsDialog from "./SettingsDialog";
+import SettingsDialog, { SettingsParameters } from "./SettingsDialog";
 import User from "./User";
 
-interface UsersProps {
-	ageAbove?: number;
-	ageBelow?: number;
-	category?: string[];
+interface UsersProps extends SettingsParameters {
+	saveSettings: Dispatch<SetStateAction<SettingsParameters>>;
 	backgroundColor?: string;
 }
 
 // Users is a Pure Components w.r.t. its props so we can encaspsulate it
 // in React.memo to avoid re-rendering when no prop has changed.
 const Users: FC<UsersProps> = React.memo(function Users({
-	ageAbove: initialAgeAbove,
-	ageBelow: initialAgeBelow,
-	category: initialCategory,
+	ageAbove,
+	ageBelow,
+	categories,
+	saveSettings,
 	backgroundColor = "magenta",
 }) {
 	const renderCounter = useRenderCounter();
 	const [settingsVisible, setSettingsVisible] = useState(false);
-	const [ageAbove, setAgeAbove] = useState(initialAgeAbove);
-	const [ageBelow, setAgeBelow] = useState(initialAgeBelow);
-	const [category, setCategory] = useState(initialCategory);
 
 	const { data, loading, error, refetch } = useQuery(GetUsers, {
 		variables: {
 			filters: {
 				ageAbove: ageAbove,
 				ageBelow: ageBelow,
-				types: category,
+				types: categories,
 			},
 		},
 	});
-
-	const openSettingsPopup = function (visible = true) {
-		setSettingsVisible(visible);
-	};
 
 	if (error)
 		return (
@@ -58,13 +50,15 @@ const Users: FC<UsersProps> = React.memo(function Users({
 		>
 			[{renderCounter}]
 			<h2 className="App-section-title">
-				{!category ? "ALL" : category.join(" + ")}
+				{!categories ? "ALL" : categories.join(" + ")}
 				{!ageAbove ? "" : ` (above ${ageAbove})`}
 				{!ageBelow ? "" : ` (below ${ageBelow})`}
 			</h2>
 			<div className="button-row">
 				<button onClick={() => refetch()}>Refresh</button>
-				<button onClick={() => openSettingsPopup()}>Settings</button>
+				<button onClick={() => setSettingsVisible(true)}>
+					Settings
+				</button>
 			</div>
 			{!data && loading ? (
 				<p>
@@ -84,14 +78,10 @@ const Users: FC<UsersProps> = React.memo(function Users({
 					initialValues={{
 						ageAbove,
 						ageBelow,
-						category,
+						categories,
 					}}
-					save={({ ageAbove, ageBelow, category }) => {
-						setAgeAbove(ageAbove);
-						setAgeBelow(ageBelow);
-						setCategory(category);
-					}}
-					exit={() => openSettingsPopup(false)}
+					save={saveSettings}
+					exit={() => setSettingsVisible(false)}
 				/>
 			)}
 		</section>
