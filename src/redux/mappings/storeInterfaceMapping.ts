@@ -5,12 +5,19 @@ import {
 	backgroundColorVar,
 	globalQueryCache,
 	numberOfFriendsVar,
+	usersSettingsLeftVar,
+	usersSettingsMiddleVar,
+	usersSettingsRightVar,
 } from "../../apollo/localState";
+import { SettingsParameters } from "../../component/SettingsDialog";
 import {
 	backgroundColorSelector,
 	incrementNumberOfFriendsByAmount,
 	numberOfFriendsSelector,
 	setBackgroundColor,
+	setUsersSettings,
+	Sides,
+	usersSettingsSelector,
 } from "../slices/localStateSlice";
 import { addToCache, queryCacheSelector } from "../slices/queryCacheSlice";
 import { RootState } from "../store";
@@ -56,6 +63,34 @@ setReduxStoreInterfactMapping(numberOfFriendsVar, {
 		return incrementNumberOfFriendsByAmount(computeAmount(0));
 	},
 });
+
+// UsersSettings
+function getUsersSettingsInterface(
+	side: Sides
+): ReduxStoreInterface<SettingsParameters> {
+	return {
+		selector: usersSettingsSelector(side),
+		actionCreator(action) {
+			return setUsersSettings({
+				side,
+				settings: action as SettingsParameters,
+			});
+		},
+	};
+}
+
+setReduxStoreInterfactMapping(
+	usersSettingsLeftVar,
+	getUsersSettingsInterface("left")
+);
+setReduxStoreInterfactMapping(
+	usersSettingsMiddleVar,
+	getUsersSettingsInterface("middle")
+);
+setReduxStoreInterfactMapping(
+	usersSettingsRightVar,
+	getUsersSettingsInterface("right")
+);
 
 // Query Cache
 setReduxStoreInterfactMapping(globalQueryCache, {
