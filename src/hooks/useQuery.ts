@@ -7,7 +7,7 @@ import {
 	useQuery as useApolloQuery,
 } from "@apollo/client";
 import { DocumentNode } from "graphql";
-import { useQuery as useReactQuery, useQueryClient } from "react-query";
+import { useQuery as useReactQuery, useQueryClient } from "@tanstack/react-query";
 import { client as apolloClient } from "../apollo/ApolloWrapper";
 import { globalQueryCache } from "../apollo/localState";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
