@@ -47,11 +47,12 @@ const SettingsDialog: FC<SettingsDialogProps> = React.memo(
 			[setCategories]
 		);
 
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		const onAgeAboveChanged = useCallback(
 			ageInputChangeHandler(setAgeAbove),
 			[setAgeAbove]
 		);
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		const onAgeBelowChanged = useCallback(
 			ageInputChangeHandler(setAgeBelow),
 			[setAgeBelow]
