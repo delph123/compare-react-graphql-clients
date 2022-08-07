@@ -6,6 +6,7 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@reduxjs/toolkit": "^1.8.3",
+    "@tanstack/react-query": "^4.0.10",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.4.2",
@@ -19,7 +20,6 @@
     "graphql": "^16.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@tanstack/react-query": "^4.0.10",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
@@ -28,7 +28,7 @@
   },
   "scripts": {
     "front": "react-scripts start",
-    "back": "node src/server/index.js",
+    "back": "nodemon src/server/index.js",
     "start": "npm run back & npm run front",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.21.0"
+    "eslint": "^8.21.0",
+    "nodemon": "^2.0.19"
   }
 }
