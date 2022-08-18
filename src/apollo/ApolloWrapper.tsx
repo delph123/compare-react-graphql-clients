@@ -4,7 +4,7 @@ import { BatchHttpLink } from "@apollo/client/link/batch-http";
 import apolloCache from "./apolloCache";
 import { USE_BATCH_HTTP_LINK } from "../config/parameters";
 
-const URL = "/graphql";
+const URL = "http://localhost:4000/graphql";
 
 let apolloLink = null;
 
