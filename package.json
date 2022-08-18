@@ -27,6 +27,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "dev": "vite",
     "front": "react-scripts start",
     "back": "nodemon src/server/index.js",
     "start": "npm run back & npm run front",
@@ -53,7 +54,9 @@
     ]
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^2.0.1",
     "eslint": "^8.21.0",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "vite": "^3.0.8"
   }
 }
