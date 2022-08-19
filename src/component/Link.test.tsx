@@ -1,55 +1,133 @@
 import React, { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import Link from "./Link";
 
 jest.mock("react-router-dom", () => {
 	return {
 		...jest.requireActual("react-router-dom"),
+		useLocation: jest.fn(),
 	};
 });
 
-const Router = require("react-router-dom");
+function mockUseLocationReturnQuery(searchQuery: string) {
+	(useLocation as unknown as jest.Mock<Location, []>).mockReturnValue({
+		search: searchQuery,
+	} as Location);
+}
 
-const renderWithRouter = (element: ReactNode) =>
+function renderWithRouter(element: ReactNode) {
 	render(
-		<Router.MemoryRouter initialEntries={["/"]}>
-			<Router.Routes>
-				<Router.Route path="/" element={element} />
-			</Router.Routes>
-		</Router.MemoryRouter>
+		<MemoryRouter initialEntries={["/"]}>
+			<Routes>
+				<Route path="/" element={element} />
+			</Routes>
+		</MemoryRouter>
 	);
+}
 
-afterEach(() => {
-	jest.restoreAllMocks();
+beforeEach(() => {
+	mockUseLocationReturnQuery("");
 });
 
 describe("Link", () => {
-	it("renders link with content", () => {
+	it("displays 'My link' as content", () => {
 		renderWithRouter(<Link to="/a/file">My link</Link>);
 		expect(screen.getByRole("link")).toHaveTextContent("My link");
 	});
 
-	it("renders link with correct href", () => {
+	it("points to /a/file as href when query context is empty", () => {
 		renderWithRouter(<Link to="/a/file">My link</Link>);
 		expect(screen.getByRole("link").getAttribute("href")).toBe("/a/file");
 	});
 
-	it("renders link and forwards props", () => {
+	it("forwards all props", () => {
 		renderWithRouter(
-			<Link to="/a/file" className="das-klasse">
+			<Link to="/a/file" className="das-klasse" color="red">
 				My link
 			</Link>
 		);
 		expect(screen.getByRole("link")).toHaveClass("das-klasse");
+		expect(screen.getByRole("link").getAttribute("color")).toBe("red");
 	});
 
-	it("renders link with query params kept", () => {
-		jest.spyOn(Router, "useLocation").mockImplementation(() => ({
-			search: "?hellow=world",
-		}));
+	it("adds current query params to href without query param", () => {
+		mockUseLocationReturnQuery("?hello=world");
 		renderWithRouter(<Link to="/a/file">My link</Link>);
 		expect(screen.getByRole("link").getAttribute("href")).toBe(
-			"/a/file?hellow=world"
+			"/a/file?hello=world"
+		);
+	});
+
+	it("concatenates current query params to provided ones", () => {
+		mockUseLocationReturnQuery("?hello=world");
+		renderWithRouter(<Link to="/a/file?some=params">My link</Link>);
+		expect(screen.getByRole("link").getAttribute("href")).toBe(
+			"/a/file?some=params&hello=world"
+		);
+	});
+
+	it("introduces current query params to href with hash string", () => {
+		mockUseLocationReturnQuery("?hello=world");
+		renderWithRouter(<Link to="/a/file#abc">My link</Link>);
+		expect(screen.getByRole("link").getAttribute("href")).toBe(
+			"/a/file?hello=world#abc"
+		);
+	});
+
+	it("concaternates current query params to href with hash string", () => {
+		mockUseLocationReturnQuery("?hello=world");
+		renderWithRouter(<Link to="/a/file?some=param#abc">My link</Link>);
+		expect(screen.getByRole("link").getAttribute("href")).toBe(
+			"/a/file?some=param&hello=world#abc"
+		);
+	});
+
+	it("adds current query params to Path object without search param", () => {
+		mockUseLocationReturnQuery("?hello=world");
+		renderWithRouter(<Link to={{ pathname: "/a/file" }}>My link</Link>);
+		expect(screen.getByRole("link").getAttribute("href")).toBe(
+			"/a/file?hello=world"
+		);
+	});
+
+	it("concatenates current query params to Path object's provided ones", () => {
+		mockUseLocationReturnQuery("?hello=world");
+		renderWithRouter(
+			<Link to={{ pathname: "/a/file", search: "?some=params&other" }}>
+				My link
+			</Link>
+		);
+		expect(screen.getByRole("link").getAttribute("href")).toBe(
+			"/a/file?some=params&other&hello=world"
+		);
+	});
+
+	it("inserts current query params to Path object with hash string", () => {
+		mockUseLocationReturnQuery("?hello=world");
+		renderWithRouter(
+			<Link to={{ pathname: "/a/file", hash: "#abc" }}>My link</Link>
+		);
+		expect(screen.getByRole("link").getAttribute("href")).toBe(
+			"/a/file?hello=world#abc"
+		);
+	});
+
+	it("concatenates current query params to Path object's with hash string", () => {
+		mockUseLocationReturnQuery("?hello=world");
+		renderWithRouter(
+			<Link
+				to={{
+					pathname: "/a/file",
+					search: "?some=params&other",
+					hash: "#abc",
+				}}
+			>
+				My link
+			</Link>
+		);
+		expect(screen.getByRole("link").getAttribute("href")).toBe(
+			"/a/file?some=params&other&hello=world#abc"
 		);
 	});
 });
