@@ -12,7 +12,7 @@ interface RadioSetProps {
 	onSelect?: ChangeEventHandler<HTMLInputElement>;
 }
 
-const RadioSet: FC<RadioSetProps> = function RadioSet({
+const RadioSet: FC<RadioSetProps> = React.memo(function RadioSet({
 	className,
 	name,
 	legend,
@@ -37,6 +37,6 @@ const RadioSet: FC<RadioSetProps> = function RadioSet({
 			))}
 		</fieldset>
 	);
-};
+});
 
 export default RadioSet;
