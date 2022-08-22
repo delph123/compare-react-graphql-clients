@@ -4,9 +4,18 @@ import useQuery from "../hooks/useQuery";
 import User from "./User";
 import { GetUser } from "../queries/users";
 import Link from "./Link";
+import { SpyInstance } from "vitest";
 
-jest.mock("../hooks/useQuery");
-jest.mock("./Link");
+vi.mock("../hooks/useQuery", () => {
+	return {
+		default: vi.fn(),
+	};
+});
+vi.mock("./Link", () => {
+	return {
+		default: vi.fn(),
+	};
+});
 
 const USER = {
 	user: {
@@ -21,7 +30,7 @@ const ERROR = new Error("User data could not be fetched!");
 
 describe("User", () => {
 	it("displays user info", () => {
-		(useQuery as jest.Mock).mockReturnValue({
+		(useQuery as unknown as SpyInstance).mockReturnValue({
 			data: USER,
 			loading: false,
 		});
@@ -40,7 +49,7 @@ describe("User", () => {
 	});
 
 	it("displays loading indicator", () => {
-		(useQuery as jest.Mock).mockReturnValue({
+		(useQuery as unknown as SpyInstance).mockReturnValue({
 			loading: true,
 		});
 		render(<User userId="user-0" noLink={true} />);
@@ -49,7 +58,7 @@ describe("User", () => {
 	});
 
 	it("displays loading indicator with user data", () => {
-		(useQuery as jest.Mock).mockReturnValue({
+		(useQuery as unknown as SpyInstance).mockReturnValue({
 			data: USER,
 			loading: true,
 		});
@@ -59,7 +68,7 @@ describe("User", () => {
 	});
 
 	it("displays loading indicator with error", () => {
-		(useQuery as jest.Mock).mockReturnValue({
+		(useQuery as unknown as SpyInstance).mockReturnValue({
 			loading: true,
 			error: ERROR,
 		});
@@ -69,7 +78,7 @@ describe("User", () => {
 	});
 
 	it("displays not found when user empty", () => {
-		(useQuery as jest.Mock).mockReturnValue({
+		(useQuery as unknown as SpyInstance).mockReturnValue({
 			loading: false,
 		});
 		render(<User userId="user-0" noLink={true} />);
@@ -77,7 +86,7 @@ describe("User", () => {
 	});
 
 	it("displays error", () => {
-		(useQuery as jest.Mock).mockReturnValue({
+		(useQuery as unknown as SpyInstance).mockReturnValue({
 			loading: false,
 			error: ERROR,
 		});
@@ -89,13 +98,15 @@ describe("User", () => {
 	});
 
 	it("displays link when attribute is false", () => {
-		(useQuery as jest.Mock).mockReturnValue({
+		(useQuery as unknown as SpyInstance).mockReturnValue({
 			data: USER,
 			loading: false,
 		});
-		(Link as jest.Mock).mockImplementation(({ children, to }) => {
-			return <a href={to}>{children}</a>;
-		});
+		(Link as unknown as SpyInstance).mockImplementation(
+			({ children, to }) => {
+				return <a href={to}>{children}</a>;
+			}
+		);
 		render(<User userId="user-0" noLink={false} />);
 		expect(
 			screen.getByText(/Pierre Costa \(Human\) - 33 y\.o\./)
@@ -106,7 +117,7 @@ describe("User", () => {
 	});
 
 	it("displays link when attribute is omitted", () => {
-		(useQuery as jest.Mock).mockReturnValue({
+		(useQuery as unknown as SpyInstance).mockReturnValue({
 			data: USER,
 			loading: false,
 		});

@@ -1,17 +1,18 @@
 import React, { ReactNode } from "react";
+import { SpyInstance } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import Link from "./Link";
 
-jest.mock("react-router-dom", () => {
+vi.mock("react-router-dom", async () => {
 	return {
-		...jest.requireActual("react-router-dom"),
-		useLocation: jest.fn(),
+		...(await vi.importActual<any>("react-router-dom")),
+		useLocation: vi.fn(),
 	};
 });
 
 function mockUseLocationReturnQuery(searchQuery: string) {
-	(useLocation as unknown as jest.Mock<Location, []>).mockReturnValue({
+	(useLocation as unknown as SpyInstance<[], Location>).mockReturnValue({
 		search: searchQuery,
 	} as Location);
 }
