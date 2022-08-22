@@ -9,7 +9,7 @@ import { backgroundColorVar } from "../apollo/localState";
 import Friends from "../component/Friends";
 import Header from "../component/Header";
 import User from "../component/User";
-import useLocalState from "../hooks/useLocalState";
+import useStore from "../hooks/useStore";
 
 interface UserDetailsProps {}
 
@@ -23,7 +23,7 @@ function navigateUserId(
 }
 
 const UserDetails: FC<UserDetailsProps> = function () {
-	const [color, setColor] = useLocalState(backgroundColorVar);
+	const [color, setColor] = useStore(backgroundColorVar);
 	const params = useParams() as { userId: string };
 	const navigate = useNavigate();
 	const { search } = useLocation();

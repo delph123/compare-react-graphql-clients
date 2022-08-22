@@ -7,12 +7,15 @@ import {
 	useQuery as useApolloQuery,
 } from "@apollo/client";
 import { DocumentNode } from "graphql";
-import { useQuery as useReactQuery, useQueryClient } from "@tanstack/react-query";
+import {
+	useQuery as useReactQuery,
+	useQueryClient,
+} from "@tanstack/react-query";
 import { client as apolloClient } from "../apollo/ApolloWrapper";
 import { globalQueryCache } from "../apollo/localState";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { USE_QUERY_LIBRARY, USE_STORE_LIBRARY } from "../config/parameters";
-import useLocalState from "./useLocalState";
+import useStore from "./useStore";
 import { useEffect } from "react";
 import fetchApolloQuery from "../queries/fetchApolloQuery";
 import getReduxQueryInterfaceFor from "../redux/mappings/queryInterfaceMapping";
@@ -48,7 +51,7 @@ function useReduxQueryAlt<TData = any, TVariables = OperationVariables>(
 ): QueryResult<TData, TVariables> {
 	const dispatch = useAppDispatch();
 
-	const [cache, setCache] = useLocalState<
+	const [cache, setCache] = useStore<
 		Record<string, QueryResult<TData, TVariables>>
 	>(globalQueryCache as any);
 
@@ -61,7 +64,7 @@ function useReduxQueryAlt<TData = any, TVariables = OperationVariables>(
 	if (result == null || result?.called === false) {
 		const refresh = result?.called === false;
 
-		// The refetch function can be used to trigger a refresh of current query
+		// The refetch function can be used to trigger a refresh of current query.
 		// It's both clearing the global cache entry for the current query & also
 		// ensuring the apollo query will re-triggered by setting called = false.
 		const refetch = () => {
@@ -86,7 +89,7 @@ function useReduxQueryAlt<TData = any, TVariables = OperationVariables>(
 					...options,
 					query,
 					// The network-only policy allows to bypass the apollo cache, even though it eventually
-					// stores the query result its cache. We use this policy to refresh a query already made
+					// stores the query result in its cache. We use this policy to refresh a query already made
 					fetchPolicy: refresh ? "network-only" : "cache-first",
 				} as QueryOptions<TVariables, TData>)
 				.then((apolloResult) => {
@@ -158,7 +161,7 @@ function useReduxQuery<TData = any, TVariables = OperationVariables>(
 const useQuery = {
 	useApolloQuery,
 	useReduxQuery:
-		USE_STORE_LIBRARY === "useReduxState"
+		USE_STORE_LIBRARY === "useReduxStore"
 			? useReduxQuery
 			: useReduxQueryAlt,
 	useWrappedRectQuery,

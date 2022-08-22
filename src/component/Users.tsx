@@ -11,7 +11,7 @@ interface UsersProps extends SettingsParameters {
 	backgroundColor?: string;
 }
 
-// Users is a Pure Components w.r.t. its props so we can encaspsulate it
+// Users is a pure component w.r.t. its props so we can encaspsulate it
 // in React.memo to avoid re-rendering when no prop has changed.
 const Users: FC<UsersProps> = React.memo(function Users({
 	ageAbove,

@@ -22,7 +22,7 @@ function ageInputChangeHandler(setAge: (age: number | undefined) => void) {
 	return handler;
 }
 
-// User is a Pure Components w.r.t. its props so we can encaspsulate it
+// SettingsDialog is a pure component w.r.t. its props so we can encaspsulate it
 // in React.memo to avoid re-rendering when no prop has changed.
 const SettingsDialog: FC<SettingsDialogProps> = React.memo(
 	function SettingsDialog({ initialValues, save, exit }) {

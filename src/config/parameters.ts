@@ -1,23 +1,23 @@
 type UseQueryHook = "useApolloQuery" | "useReduxQuery" | "useWrappedRectQuery";
-type UseStateHook = "useReactState" | "useReactiveVarState" | "useReduxState";
+type UseStoreHook = "useReactStore" | "useReactiveVarStore" | "useReduxStore";
 type LibraryChoice<T> = {
 	id: string;
 	label: string;
 	hook: T;
 };
 
-export const DEFAULT_QUERY_LIBRARY = "redux-thunk";
-export const DEFAULT_STORE_LIBRARY = "redux";
+export const DEFAULT_QUERY_LIBRARY = "apollo";
+export const DEFAULT_STORE_LIBRARY = "reactive-var";
 
 export const QUERY_LIBRARY_CHOICES: LibraryChoice<UseQueryHook>[] = [
 	{ id: "apollo", label: "Apollo", hook: "useApolloQuery" },
 	{ id: "redux-thunk", label: "Redux Thunk", hook: "useReduxQuery" },
 	{ id: "react-query", label: "React Query", hook: "useWrappedRectQuery" },
 ];
-export const STORE_LIBRARY_CHOICES: LibraryChoice<UseStateHook>[] = [
-	{ id: "react-state", label: "React State", hook: "useReactState" },
-	{ id: "reactive-var", label: "Reactive Var", hook: "useReactiveVarState" },
-	{ id: "redux", label: "Redux", hook: "useReduxState" },
+export const STORE_LIBRARY_CHOICES: LibraryChoice<UseStoreHook>[] = [
+	{ id: "react-state", label: "React State", hook: "useReactStore" },
+	{ id: "reactive-var", label: "Reactive Var", hook: "useReactiveVarStore" },
+	{ id: "redux", label: "Redux", hook: "useReduxStore" },
 ];
 
 export function getConfigFromSearchParams(searchParams: URLSearchParams) {
@@ -32,9 +32,9 @@ export const { query, store } = getConfigFromSearchParams(
 );
 
 export const USE_QUERY_LIBRARY =
-	QUERY_LIBRARY_CHOICES.find((c) => c.id === query)?.hook || "useReduxQuery";
+	QUERY_LIBRARY_CHOICES.find((c) => c.id === query)?.hook || "useApolloQuery";
 export const USE_STORE_LIBRARY =
 	STORE_LIBRARY_CHOICES.find((c) => c.id === store)?.hook ||
-	"useReactiveVarState";
+	"useReactiveVarStore";
 
 export const USE_BATCH_HTTP_LINK = false;

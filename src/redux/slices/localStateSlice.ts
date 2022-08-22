@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SettingsParameters } from "../../component/SettingsDialog";
+import {
+	DEFAULT_BACKGROUND_COLOR,
+	DEFAULT_NUMBER_OF_FRIENDS,
+	DEFAULT_USERS_SETTINGS_LEFT,
+	DEFAULT_USERS_SETTINGS_MIDDLE,
+	DEFAULT_USERS_SETTINGS_RIGHT,
+} from "../../config/defaults";
 import { RootState } from "../store";
 
 export type Sides = "left" | "middle" | "right";
@@ -15,19 +22,12 @@ export interface LocalState {
 }
 
 const initialState: LocalState = {
-	backgroundColor: "#E6E6FA",
-	numberOfFriends: 10,
+	backgroundColor: DEFAULT_BACKGROUND_COLOR,
+	numberOfFriends: DEFAULT_NUMBER_OF_FRIENDS,
 	usersSettings: {
-		left: {
-			ageBelow: 34,
-			categories: ["HUMAN"],
-		},
-		middle: {
-			categories: ["ADMIN", "COMPUTER"],
-		},
-		right: {
-			ageAbove: 30,
-		},
+		left: DEFAULT_USERS_SETTINGS_LEFT,
+		middle: DEFAULT_USERS_SETTINGS_MIDDLE,
+		right: DEFAULT_USERS_SETTINGS_RIGHT,
 	},
 };
 

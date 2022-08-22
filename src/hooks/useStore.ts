@@ -16,21 +16,21 @@ function setReactiveVar<T>(variable: ReactiveVar<T>) {
 	};
 }
 
-function useReactiveVarState<T>(
+function useReactiveVarStore<T>(
 	variable: ReactiveVar<T>
 ): [T, Dispatch<SetStateAction<T>>] {
 	const value = useReactiveVar(variable);
 	return [value, setReactiveVar(variable)];
 }
 
-function useReactState<T>(
+function useReactStore<T>(
 	variable: ReactiveVar<T>
 ): [T, Dispatch<SetStateAction<T>>] {
 	const initialValue = variable();
 	return useState(initialValue);
 }
 
-function useReduxState<T>(
+function useReduxStore<T>(
 	variable: ReactiveVar<T>
 ): [T, Dispatch<SetStateAction<T>>] {
 	const { selector, actionCreator } = getReduxStoreInterfaceFor(variable);
@@ -42,8 +42,8 @@ function useReduxState<T>(
 	return [value, setValue];
 }
 
-const useLocalState = { useReactState, useReactiveVarState, useReduxState }[
+const useStore = { useReactStore, useReactiveVarStore, useReduxStore }[
 	USE_STORE_LIBRARY
 ];
 
-export default useLocalState;
+export default useStore;
