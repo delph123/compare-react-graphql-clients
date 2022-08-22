@@ -10,7 +10,7 @@ interface UserProps {
 	noLink?: boolean;
 }
 
-// User is a Pure Components w.r.t. its props so we can encaspsulate it
+// User is a pure component w.r.t. its props so we can encaspsulate it
 // in React.memo to avoid re-rendering when no prop has changed.
 const User: FC<UserProps> = React.memo(function User({
 	userId,

@@ -33,7 +33,7 @@ function getRefreshLabel(userId: string | undefined | null) {
 	}
 }
 
-// Header is a Pure Components w.r.t. its props so we can encaspsulate it
+// Header is a pure component w.r.t. its props so we can encaspsulate it
 // in React.memo to avoid re-rendering when no prop has changed.
 const Header: FC<HeaderProps> = React.memo(function Header({
 	children,

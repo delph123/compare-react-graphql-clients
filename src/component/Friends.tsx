@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { numberOfFriendsVar } from "../apollo/localState";
-import useLocalState from "../hooks/useLocalState";
+import useStore from "../hooks/useStore";
 import useQuery from "../hooks/useQuery";
 import useRenderCounter from "../hooks/useRenderCounter";
 import { GetFriends } from "../queries/users";
@@ -15,7 +15,7 @@ interface FriendsProps {
 const increment = (n: number) => n + 1;
 const decrement = (n: number) => n - 1;
 
-// Friends is a Pure Components w.r.t. its props so we can encaspsulate it
+// Friends is a pure component w.r.t. its props so we can encaspsulate it
 // in React.memo to avoid re-rendering when no prop has changed.
 const Friends: FC<FriendsProps> = React.memo(function Friends({
 	userId,
@@ -23,7 +23,7 @@ const Friends: FC<FriendsProps> = React.memo(function Friends({
 }) {
 	const renderCounter = useRenderCounter();
 
-	const [nbFriends, setNbFriends] = useLocalState(numberOfFriendsVar);
+	const [nbFriends, setNbFriends] = useStore(numberOfFriendsVar);
 
 	const {
 		data: { user: { friends } } = { user: { friends: [] } },

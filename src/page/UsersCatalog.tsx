@@ -7,19 +7,19 @@ import {
 	usersSettingsMiddleVar,
 	usersSettingsRightVar,
 } from "../apollo/localState";
-import useLocalState from "../hooks/useLocalState";
+import useStore from "../hooks/useStore";
 
 interface UsersCatalogProps {}
 
 const UsersCatalog: FC<UsersCatalogProps> = function () {
-	const [color, setColor] = useLocalState(backgroundColorVar);
+	const [color, setColor] = useStore(backgroundColorVar);
 
 	const [usersSettingsLeft, setUsersSettingsLeft] =
-		useLocalState(usersSettingsLeftVar);
-	const [usersSettingsMiddle, setUsersSettingsMiddle] = useLocalState(
+		useStore(usersSettingsLeftVar);
+	const [usersSettingsMiddle, setUsersSettingsMiddle] = useStore(
 		usersSettingsMiddleVar
 	);
-	const [usersSettingsRight, setUsersSettingsRight] = useLocalState(
+	const [usersSettingsRight, setUsersSettingsRight] = useStore(
 		usersSettingsRightVar
 	);
 
@@ -29,6 +29,7 @@ const UsersCatalog: FC<UsersCatalogProps> = function () {
 				Users Catalog
 			</Header>
 			<div className="App">
+				{/* Display three times the same component, each with their own search criteria. */}
 				<Users
 					ageBelow={usersSettingsLeft.ageBelow}
 					ageAbove={usersSettingsLeft.ageAbove}
