@@ -1,7 +1,15 @@
 {
-  "name": "apollo",
-  "version": "0.1.0",
+  "name": "compare-react-graphql-clients",
+  "version": "1.0.0",
+  "description": "Demo site to compare GraphQL clients for react (Apollo, React-Query, Redux-Thunk)",
   "private": true,
+  "author": {
+    "name": "delph123"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/delph123/compare-react-graphql-clients.git"
+  },
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@reduxjs/toolkit": "^1.8.3",
