@@ -1,5 +1,9 @@
 # Demo site to compare GraphQL clients for react (Apollo, React-Query, Redux-Thunk)
 
+## Demo
+
+Try it on https://stackblitz.com/github/delph123/compare-react-graphql-clients
+
 ## Explanations
 
 To be filled...
