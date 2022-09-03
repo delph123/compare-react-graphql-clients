@@ -1,4 +1,4 @@
-# Demo Application to test Apollo Client
+# Demo site to compare GraphQL clients for react (Apollo, React-Query, Redux-Thunk)
 
 ## Explanations
 
@@ -9,8 +9,8 @@ To be filled...
 This project uses vite & yarn. To get started, clone the repo & install dependancies with:
 
 ```
-  git clone https://innersource.soprasteria.com/delphin.barraud/apollo-client-demo.git
-  cd apollo-client-demo
+  git clone https://github.com/delph123/compare-react-graphql-clients.git
+  cd compare-react-graphql-clients
   yarn
 ```
 
